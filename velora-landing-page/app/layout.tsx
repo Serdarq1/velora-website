@@ -13,7 +13,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "Velora",
-  description: "Landing Page for Salon App",
+  description: "A'dan Z'ye salon yönetimi.",
 };
 
 export default function RootLayout({

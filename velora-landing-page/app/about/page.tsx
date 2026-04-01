@@ -22,7 +22,7 @@ const page = () => {
           title="Hakkımızda"
           mainImage={{
             src: "/dashboard.png",
-            alt: "Salon Landing yönetim paneli",
+            alt: "Velora özet paneli.",
           }}
           breakout={{
             title: "Birkaç tık ile kullanmaya başlayın.",
