@@ -32,7 +32,7 @@ const Hero = ({
 }: Hero) => {
   return (
     <div>
-      <div className="p-3">
+      <div className="px-4 pt-4 sm:px-6 sm:pt-5">
         <Navigation />
       </div>
       <div
