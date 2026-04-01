@@ -12,7 +12,6 @@ YÜRÜRLÜLÜK TARİHİ: 01.04.2026
 
 Serdar Ziya Akova
 Vergi No: 0330403073
-MERSİS No: Bulunmamaktadır
 Adres: İzmir Bornova Kemalpaşa Mahallesi 7081 Sokak No:21/2
 E-posta: iletisim@veloraappy.com
 
@@ -171,7 +170,6 @@ YÜRÜRLÜLÜK TARİHİ: 01.04.2026
 Sağlayıcı / Satıcı
 Ad Soyad / Unvan: Serdar Ziya Akova
 Vergi No: 0330403073
-MERSİS No: Bulunmamaktadır
 Adres: İzmir Bornova Kemalpaşa Mahallesi 7081 Sokak No:21/2
 E-posta: iletisim@veloraappy.com
 
