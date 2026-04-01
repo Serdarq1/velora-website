@@ -46,7 +46,7 @@ const Hero = () => {
       <section className="flex flex-col items-center justify-center space-y-5 sm:space-y-10">
         <div className="w-full text-center px-4 sm:px-0">
           <h1 className="font-sans text-2xl sm:text-4xl lg:text-6xl font-semibold leading-tight text-neutral-900 dark:text-neutral-100">
-            Bekleme listemize katılarak <span className="text-indigo-500">Velora'yı</span> deneyecek ilk kişilerden biri olun.
+            Bekleme listemize katılarak <span className="text-indigo-500">Velora&apos;yı</span> deneyecek ilk kişilerden biri olun.
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-neutral-600 dark:text-neutral-300">
             Salonunuzun tüm işlemlerini tek panelden yöneterek zaman kazanın, <br />gelmeyen müşteri oranınızı azaltın ve hatasız gelir-gider tablosu tutun.
