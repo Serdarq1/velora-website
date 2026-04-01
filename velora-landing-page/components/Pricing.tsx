@@ -83,19 +83,19 @@ const Pricing = ({
 
   return (
     <>
-      <section className={cn("py-32", className)}>
+      <section className={cn("py-20 sm:py-24 lg:py-32", className)}>
       <div className="container">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
-          <h2 className="text-4xl font-semibold text-pretty lg:text-6xl">
+          <h2 className="text-3xl font-semibold text-pretty sm:text-4xl lg:text-6xl">
             {heading}
           </h2>
-          <p className="text-muted-foreground lg:text-xl">{description}</p>
-          <div className="inline-flex items-center rounded-lg shadow-md shadow-black/10 ring-1 ring-black/10 overflow-hidden text-lg">
+          <p className="text-sm text-muted-foreground sm:text-base lg:text-xl">{description}</p>
+          <div className="inline-flex w-full max-w-md items-center overflow-hidden rounded-lg text-base shadow-md shadow-black/10 ring-1 ring-black/10 sm:w-auto sm:text-lg">
             <Button
               size="sm"
               variant="ghost"
               className={cn(
-                "rounded-none border-0 px-6 py-2 text-base font-semibold bg-transparent text-muted-foreground shadow-none transition-colors duration-150 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0",
+                "min-h-11 flex-1 rounded-none border-0 px-4 py-2 text-sm font-semibold bg-transparent text-muted-foreground shadow-none transition-colors duration-150 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 sm:px-6 sm:text-base",
                 !isYearly &&
                   "cursor-pointer bg-primary text-white hover:text-white focus-visible:text-white shadow-md shadow-black/10 ring-0 hover:bg-primary"
               )}
@@ -108,7 +108,7 @@ const Pricing = ({
               size="sm"
               variant="ghost"
               className={cn(
-                "rounded-none border-0 border-l border-black/5 px-6 py-2 text-base font-semibold bg-transparent text-muted-foreground shadow-none transition-colors duration-150 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0",
+                "min-h-11 flex-1 rounded-none border-0 border-l border-black/5 px-4 py-2 text-sm font-semibold bg-transparent text-muted-foreground shadow-none transition-colors duration-150 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 sm:px-6 sm:text-base",
                 isYearly &&
                   "cursor-pointer bg-primary text-white hover:text-white focus-visible:text-white shadow-md shadow-black/10 ring-0 hover:bg-primary"
               )}
@@ -122,7 +122,7 @@ const Pricing = ({
             {plans.map((plan) => (
               <Card
                 key={plan.id}
-                className="relative flex min-h-[560px] w-96 flex-col justify-between text-left shadow-lg"
+                className="relative flex min-h-[560px] w-full max-w-md flex-col justify-between text-left shadow-lg"
               >
                 <CardHeader className="relative z-20">
                   <CardTitle>
@@ -155,7 +155,7 @@ const Pricing = ({
                 <CardFooter className="relative z-20 mt-auto">
                   <Button
                     asChild
-                    className="w-full border border-primary bg-white text-primary transition hover:bg-primary hover:text-white"
+                    className="min-h-11 w-full border border-primary bg-white text-primary transition hover:bg-primary hover:text-white"
                   >
                     <a href={plan.button.url} target="_blank">
                       {plan.button.text}

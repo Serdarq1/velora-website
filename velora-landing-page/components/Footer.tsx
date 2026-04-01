@@ -44,13 +44,13 @@ const Footer = ({
   return (
     <section
       className={cn(
-        "bg-stone-900 py-60 text-primary-foreground md:py-24",
+        "bg-stone-900 py-16 text-primary-foreground sm:py-20 md:py-24",
         className
       )}
     >
       <div className="container">
         <footer className="space-y-12">
-          <div className="grid grid-cols-2 gap-10 lg:grid-cols-5">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
             <div className="col-span-2 lg:col-span-2">
               <div className="flex items-center gap-3 lg:justify-start">
                 <Image src="/Velora_white.png" alt="Velora logo" width={85} height={85} />

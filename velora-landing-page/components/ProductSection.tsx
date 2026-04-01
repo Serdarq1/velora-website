@@ -43,17 +43,17 @@ const ProductSection = ({ className }: ProductSectionProps) => {
   return (
     <section
       ref={sectionRef}
-      className={cn("py-28 dark:bg-slate-950", className)}
+      className={cn("py-20 dark:bg-slate-950 sm:py-24 lg:py-28", className)}
     >
-      <div className="container grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
+      <div className="container grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
         <div className="flex flex-col gap-6 lg:pr-10">
           <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-black/5 backdrop-blur dark:bg-white/5 dark:text-slate-100">
             Velora  
           </span>
-          <h2 className="text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+          <h2 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
             Telefonunuzdan <span className="bg-gradient-to-r from-pink-600 via-purple-500 to-pink-400 inline-block text-transparent bg-clip-text">salonunuzu</span> yönetin.
           </h2>
-           <div className="flex flex-wrap items-center gap-3 text-sm text-slate-700 dark:text-slate-100/80">
+           <div className="flex flex-wrap items-center gap-2.5 text-sm text-slate-700 dark:text-slate-100/80">
             <span className="rounded-full bg-white/80 px-3 py-1 ring-1 ring-black/5 backdrop-blur dark:bg-white/10">
               Hızlı randevu ekle
             </span>
@@ -78,18 +78,18 @@ const ProductSection = ({ className }: ProductSectionProps) => {
               <span><strong>Otomatik hatırlatma ve onay mesajları</strong> ile randevu iptal oranını düşürün.</span>
             </li>
           </ul>
-            <Link href={waitlistUrl}>
-             <Button>
+            <Link href={waitlistUrl} className="w-full sm:w-auto">
+             <Button className="w-full sm:w-auto">
                Demo talep et
              </Button>
             </Link>
         </div>
 
-        <div className="relative flex min-h-[420px] items-center justify-center">
+        <div className="relative flex min-h-[320px] items-center justify-center sm:min-h-[420px]">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/15 via-white/30 to-indigo-100 blur-3xl dark:from-primary/10 dark:via-slate-900 dark:to-slate-900" />
 
-          <div className="relative flex items-center gap-6">
-            <div className="relative w-[200px] aspect-[778/1422] overflow-hidden rounded-[36px] border-2 border-white/80 bg-white shadow-2xl ring-2 ring-primary/20 backdrop-blur dark:border-white/20 dark:bg-slate-900"
+          <div className="relative flex w-full max-w-[20rem] items-center justify-center gap-3 sm:max-w-none sm:gap-6">
+            <div className="relative aspect-[778/1422] w-[44vw] max-w-[200px] min-w-[130px] overflow-hidden rounded-[28px] border-2 border-white/80 bg-white shadow-2xl ring-2 ring-primary/20 backdrop-blur sm:rounded-[36px] dark:border-white/20 dark:bg-slate-900"
             style={{
                 transform: `translateY(${scrollOffset}px)`,
                 transition: "transform 160ms ease-out",
@@ -100,12 +100,12 @@ const ProductSection = ({ className }: ProductSectionProps) => {
                 alt="Salon uygulaması panel"
                 fill
                 className="object-cover object-top"
-                sizes="(min-width: 1024px) 200px, 45vw"
+                sizes="(min-width: 1024px) 200px, 44vw"
                 priority
               />
             </div>
             <div
-              className="relative w-[180px] aspect-[778/1422] overflow-hidden rounded-[32px] border-2 border-white/80 bg-white shadow-2xl ring-2 ring-primary/20 backdrop-blur dark:border-white/20 dark:bg-slate-900"
+              className="relative aspect-[778/1422] w-[40vw] max-w-[180px] min-w-[120px] overflow-hidden rounded-[24px] border-2 border-white/80 bg-white shadow-2xl ring-2 ring-primary/20 backdrop-blur sm:rounded-[32px] dark:border-white/20 dark:bg-slate-900"
             >
               <Image
                 src="/product_detail_mobile.png"

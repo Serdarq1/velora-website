@@ -43,10 +43,10 @@ const ProductMain = ({
   className,
 }: ProductMainProps) => {
   return (
-    <section className={cn("py-32", className) }>
+    <section className={cn("py-20 sm:py-24 lg:py-32", className) }>
       <div className="container overflow-hidden">
-        <div className="mb-20 flex flex-col items-center gap-6 text-center">
-          <h1 className="text-4xl font-semibold lg:text-5xl">{heading}</h1>
+        <div className="mb-14 flex flex-col items-center gap-5 text-center sm:mb-16 lg:mb-20">
+          <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">{heading}</h1>
         </div>
         <div className="relative mx-auto max-w-5xl">
           <Image
@@ -61,7 +61,7 @@ const ProductMain = ({
           <div className="absolute -top-28 -right-28 -z-10 aspect-video h-72 w-96 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_20%,transparent_100%)] [background-size:12px_12px] opacity-40 sm:bg-[radial-gradient(hsl(var(--muted-foreground))_1px,transparent_1px)]"></div>
           <div className="absolute -top-28 -left-28 -z-10 aspect-video h-72 w-96 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_20%,transparent_100%)] [background-size:12px_12px] opacity-40 sm:bg-[radial-gradient(hsl(var(--muted-foreground))_1px,transparent_1px)]"></div>
         </div>
-        <div className="mx-auto mt-10 flex max-w-5xl flex-col md:flex-row">
+        <div className="mx-auto mt-8 flex max-w-5xl flex-col gap-4 md:mt-10 md:flex-row md:gap-0">
           {features.map((feature, index) => (
             <React.Fragment key={feature.title}>
               {index > 0 && (
@@ -72,7 +72,7 @@ const ProductMain = ({
               )}
               <div
                 key={index}
-                className="flex grow basis-0 flex-col rounded-md bg-background p-4"
+                className="flex grow basis-0 flex-col rounded-xl bg-background p-5"
               >
                 <div className="mb-6 flex size-10 items-center justify-center rounded-full bg-background drop-shadow-lg">
                   {feature.icon}

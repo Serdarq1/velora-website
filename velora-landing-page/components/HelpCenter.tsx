@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Faq } from "./Faq";
 
 interface HelpCenterProps {
   className?: string;
@@ -32,7 +31,7 @@ const HelpCenter = ({ className }: HelpCenterProps) => {
     <section className={cn("py-20 md:py-28", className)}>
       <div className="container max-w-6xl">
         <div className="mb-10 md:mb-14">
-          <h2 className="text-4xl font-semibold leading-tight tracking-tight text-pretty md:text-5xl">
+          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-pretty sm:text-4xl md:text-5xl">
             Asla yalnız değilsiniz, müşteri desteği 7/24 yanınızda
           </h2>
         </div>

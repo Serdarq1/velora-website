@@ -16,17 +16,17 @@ const waitlistUrl =
 const Navigation = () => {
   return (
     <nav className="relative z-20 w-full">
-      <div className="navbar-ambient relative flex w-full flex-wrap items-center justify-between gap-3 rounded-none px-2 py-3 sm:px-4">
-        <div className="flex items-center gap-2 font-semibold tracking-tight sm:gap-3 shrink-0 pl-1">
+      <div className="navbar-ambient relative flex w-full flex-col items-stretch gap-4 rounded-none px-2 py-3 sm:px-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex shrink-0 items-center justify-center gap-2 pl-1 font-semibold tracking-tight sm:gap-3 lg:justify-start">
          <Link href={"/"} >
-          <Image alt="velora-logo" src="/Velora.png" height={80} width={80} /></Link>
+          <Image alt="velora-logo" src="/Velora.png" height={80} width={80} className="h-14 w-14 sm:h-16 sm:w-16" /></Link>
         </div>
 
-        <NavigationMenu className="flex-1 justify-center">
-          <NavigationMenuList className="flex w-full flex-wrap items-center justify-center gap-1">
+        <NavigationMenu className="w-full max-w-full justify-center lg:flex-1">
+          <NavigationMenuList className="flex w-full flex-wrap items-center justify-center gap-1 sm:gap-2">
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4 cursor-pointer"
+                className="cursor-pointer rounded-md px-3 py-2 text-center text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4"
                 href={"/about"}
               >
                 Hakkımızda
@@ -34,7 +34,7 @@ const Navigation = () => {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4 cursor-pointer"
+                className="cursor-pointer rounded-md px-3 py-2 text-center text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4"
                 href={"/pricing/"}
               >
                 Fiyatlandırma
@@ -43,7 +43,7 @@ const Navigation = () => {
 
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4 cursor-pointer"
+                className="cursor-pointer rounded-md px-3 py-2 text-center text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4"
                 href="faq"
               >
                 Sıkça Sorulan Sorular
@@ -52,7 +52,7 @@ const Navigation = () => {
 
             <NavigationMenuItem>
               <NavigationMenuLink
-                className="rounded-md px-3 py-2 text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4 cursor-pointer"
+                className="cursor-pointer rounded-md px-3 py-2 text-center text-sm font-medium transition hover:bg-accent hover:text-accent-foreground sm:px-4"
                 href={"/contact"}
               >
                 İletişim
@@ -61,14 +61,14 @@ const Navigation = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex w-full shrink-0 flex-col items-stretch gap-2 sm:flex-row sm:items-center lg:w-auto">
           <Link href={waitlistUrl}> 
-            <Button variant="ghost" size="sm" className="hidden sm:inline-flex cursor-pointer">
+            <Button variant="ghost" size="sm" className="hidden cursor-pointer sm:inline-flex">
               Giriş Yap
             </Button>
           </Link>
-          <Link href={waitlistUrl}>
-            <Button size="sm" className="w-full sm:w-auto cursor-pointer">
+          <Link href={waitlistUrl} className="w-full sm:w-auto">
+            <Button size="sm" className="w-full cursor-pointer sm:w-auto">
               Kayıt Ol
             </Button>
           </Link>

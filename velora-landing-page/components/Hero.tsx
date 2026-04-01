@@ -1,9 +1,7 @@
-import { Star } from "lucide-react";
 import React from "react";
 
 import { cn } from "@/lib/utils";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -20,14 +18,6 @@ interface Hero {
     url: string;
     className?: string;
   };
-  reviews?: {
-    count: number;
-    rating?: number;
-    avatars: {
-      src: string;
-      alt: string;
-    }[];
-  };
   className?: string;
 }
 
@@ -37,32 +27,6 @@ const Hero = ({
   button = {
     text: "Detayları Gör",
     url: waitlistUrl,
-  },
-  reviews = {
-    count: 200,
-    rating: 5.0,
-    avatars: [
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-1.webp",
-        alt: "Avatar 1",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-2.webp",
-        alt: "Avatar 2",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-3.webp",
-        alt: "Avatar 3",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-4.webp",
-        alt: "Avatar 4",
-      },
-      {
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/avatar-5.webp",
-        alt: "Avatar 5",
-      },
-    ],
   },
   className,
 }: Hero) => {
@@ -76,23 +40,23 @@ const Hero = ({
         aria-hidden="true"
       />
 
-      <section className={cn("relative z-10 pb-24 pt-20 sm:pt-28", className)}>
+      <section className={cn("relative z-10 pb-20 pt-14 sm:pb-24 sm:pt-20 lg:pt-28", className)}>
         <div className="container text-center">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6">
-            <h1 className="text-3xl font-semibold lg:text-6xl">{heading}</h1>
-            <p className="text-balance text-muted-foreground lg:text-lg">
+          <div className="mx-auto flex max-w-5xl flex-col gap-5 sm:gap-6">
+            <h1 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-6xl">{heading}</h1>
+            <p className="mx-auto max-w-3xl text-pretty text-sm text-muted-foreground sm:text-base lg:text-lg">
               {description}
             </p>
           </div>
-          <Button asChild size="lg" className="mt-10">
+          <Button asChild size="lg" className="mt-8 w-full max-w-xs sm:mt-10 sm:w-auto">
             <a href={button.url}>{button.text}</a>
           </Button>
         </div>
       </section>
 
-      <section className="relative z-10 -mt-12 pb-24 sm:-mt-16">
+      <section className="relative z-10 -mt-6 pb-20 sm:-mt-12 sm:pb-24 lg:-mt-16">
         <div className="container">
-          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-4xl border bg-white/90 shadow-xl ring-1 ring-black/5">
+          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.75rem] border bg-white/90 shadow-xl ring-1 ring-black/5 sm:rounded-4xl">
             <div className="w-full">
               <Image
                 src="/dashboard.png"

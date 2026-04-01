@@ -2,7 +2,6 @@ import {
   CalendarClock,
   CreditCard,
   Instagram,
-  LineChart,
   MessageCircle,
   ShieldCheck,
   Users,
@@ -70,11 +69,11 @@ const Features = ({
   className,
 }: FeaturesProps) => {
   return (
-    <section className={cn("py-32 bg-[oklch(0.965_0.02_270)] dark:bg-slate-950", className)}>
+    <section className={cn("bg-[oklch(0.965_0.02_270)] py-20 dark:bg-slate-950 sm:py-24 lg:py-32", className)}>
       <div className="container p-2">
         {title && (
-          <div className="mx-auto mb-16 max-w-3xl text-center">
-            <h2 className="text-4xl font-medium text-pretty lg:text-5xl">
+          <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
+            <h2 className="text-3xl font-medium text-pretty sm:text-4xl lg:text-5xl">
               {title}
             </h2>
           </div>
