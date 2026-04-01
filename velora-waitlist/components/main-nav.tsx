@@ -8,6 +8,9 @@ import { useTheme } from "next-themes"
 import { NavItem } from "@/types/nav"
 import { cn } from "@/lib/utils"
 
+const landingUrl =
+  process.env.NEXT_PUBLIC_LANDING_URL || "http://localhost:3000"
+
 interface MainNavProps {
   items?: NavItem[]
 }
@@ -25,7 +28,7 @@ export function MainNav({ items }: MainNavProps) {
 
   return (
     <div className="flex gap-6 md:gap-10">
-      <Link href="http://localhost:3000" className="flex items-center space-x-2">
+      <Link href={landingUrl} className="flex items-center space-x-2">
         <Image src={logoSrc} alt="Logo" width={100} height={100} />
       </Link>
       {items?.length ? (

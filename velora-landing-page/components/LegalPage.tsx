@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Footer } from "@/components/Footer";
 import { Faq } from "@/components/Faq";
 import { HelpCenter } from "@/components/HelpCenter";
@@ -21,7 +22,7 @@ const isBulletLike = (line: string) =>
   );
 
 const renderContentLines = (lines: string[]) => {
-  const elements: JSX.Element[] = [];
+  const elements: ReactNode[] = [];
   let bulletBuffer: string[] = [];
 
   const flushBulletBuffer = (key: string) => {

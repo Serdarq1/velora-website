@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const waitlistUrl =
+  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+
 interface ProductSectionProps {
   className?: string;
 }
@@ -75,7 +78,7 @@ const ProductSection = ({ className }: ProductSectionProps) => {
               <span><strong>Otomatik hatırlatma ve onay mesajları</strong> ile randevu iptal oranını düşürün.</span>
             </li>
           </ul>
-            <Link href="http://localhost:3001">
+            <Link href={waitlistUrl}>
              <Button>
                Demo talep et
              </Button>

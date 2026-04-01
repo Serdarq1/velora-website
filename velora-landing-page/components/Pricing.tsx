@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+const waitlistUrl =
+  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+
 interface PricingFeature {
   text: string;
 }
@@ -70,7 +73,7 @@ const Pricing = ({
       ],
       button: {
         text: "Abone ol",
-        url: "http://localhost:3001",
+        url: waitlistUrl,
       },
     },
   ],

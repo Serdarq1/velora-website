@@ -9,6 +9,9 @@ import Image from "next/image";
 
 import Navigation from "@/components/Navigation";
 
+const waitlistUrl =
+  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+
 interface Hero {
   heading?: string;
   description?: string;
@@ -33,7 +36,7 @@ const Hero = ({
   description = "A'dan Z'ye salon yönetiminiz için gerekli her özelliği içeren yeni nesil yönetim uygulaması ile tüm belgelerinizi tek yerde toplayın, zamandan kazanın ve cironuzu arttırın.  ",
   button = {
     text: "Detayları Gör",
-    url: "http://localhost:3001",
+    url: waitlistUrl,
   },
   reviews = {
     count: 200,

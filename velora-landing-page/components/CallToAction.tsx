@@ -4,6 +4,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const waitlistUrl =
+  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+
 interface CallToActionProps {
   title?: string;
   subtitle?: string;
@@ -16,7 +19,7 @@ const CallToAction = ({
   title = "Ne bekliyorsunuz?",
   subtitle = "Salonunuza özel destek alın ve bugün büyümeye başlayın.",
   buttonText = "Hemen başlayın",
-  buttonHref = "http://localhost:3001",
+  buttonHref = waitlistUrl,
   className,
 }: CallToActionProps) => {
   return (

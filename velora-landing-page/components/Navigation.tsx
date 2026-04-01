@@ -10,6 +10,9 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
+const waitlistUrl =
+  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+
 const Navigation = () => {
   return (
     <nav className="relative z-20 w-full">
@@ -59,12 +62,12 @@ const Navigation = () => {
         </NavigationMenu>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link href="http://localhost:3001"> 
+          <Link href={waitlistUrl}> 
             <Button variant="ghost" size="sm" className="hidden sm:inline-flex cursor-pointer">
               Giriş Yap
             </Button>
           </Link>
-          <Link href="http://localhost:3001">
+          <Link href={waitlistUrl}>
             <Button size="sm" className="w-full sm:w-auto cursor-pointer">
               Kayıt Ol
             </Button>
