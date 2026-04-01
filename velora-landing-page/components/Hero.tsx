@@ -1,14 +1,14 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
+import { getWaitlistUrl } from "@/lib/waitlist-url";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import Navigation from "@/components/Navigation";
 
-const waitlistUrl =
-  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+const waitlistUrl = getWaitlistUrl();
 
 interface Hero {
   heading?: string;

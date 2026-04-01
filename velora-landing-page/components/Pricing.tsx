@@ -4,6 +4,7 @@ import { CircleCheck } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { getWaitlistUrl } from "@/lib/waitlist-url";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-const waitlistUrl =
-  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+const waitlistUrl = getWaitlistUrl();
 
 interface PricingFeature {
   text: string;

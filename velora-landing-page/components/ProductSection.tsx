@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { getWaitlistUrl } from "@/lib/waitlist-url";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const waitlistUrl =
-  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+const waitlistUrl = getWaitlistUrl();
 
 interface ProductSectionProps {
   className?: string;

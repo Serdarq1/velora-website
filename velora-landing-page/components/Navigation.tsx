@@ -7,11 +7,11 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import { getWaitlistUrl } from "@/lib/waitlist-url";
 import Link from "next/link";
 import Image from "next/image";
 
-const waitlistUrl =
-  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+const waitlistUrl = getWaitlistUrl();
 
 const Navigation = () => {
   return (

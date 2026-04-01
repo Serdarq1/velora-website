@@ -4,10 +4,10 @@ import { Faq } from '@/components/Faq'
 import { Footer } from '@/components/Footer'
 import { HelpCenter } from '@/components/HelpCenter'
 import Navigation from '@/components/Navigation'
+import { getWaitlistUrl } from '@/lib/waitlist-url'
 import React from 'react'
 
-const waitlistUrl =
-  process.env.NEXT_PUBLIC_WAITLIST_URL || "http://localhost:3001";
+const waitlistUrl = getWaitlistUrl();
 
 const page = () => {
   return (

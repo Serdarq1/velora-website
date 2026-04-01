@@ -5,11 +5,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 
+import { getLandingUrl } from "@/lib/public-urls"
 import { NavItem } from "@/types/nav"
 import { cn } from "@/lib/utils"
 
-const landingUrl =
-  process.env.NEXT_PUBLIC_LANDING_URL || "http://localhost:3000"
+const landingUrl = getLandingUrl()
 
 interface MainNavProps {
   items?: NavItem[]
