@@ -12,12 +12,12 @@ const waitlistUrl = getWaitlistUrl();
 const page = () => {
   return (
     <div className="overflow-x-hidden bg-background">
-      <div>
+      <div className="px-4 pt-4 sm:px-6 sm:pt-5">
         <Navigation />
       </div>
       <div className="w-full">
         <About
-          containerClassName="px-0"
+          containerClassName="px-4 sm:px-6"
           achievementsFullBleed
           title="Hakkımızda"
           mainImage={{
