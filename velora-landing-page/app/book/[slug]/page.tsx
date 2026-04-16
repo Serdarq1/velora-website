@@ -557,7 +557,7 @@ export default function BookingPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6">
         <div className="max-w-xl rounded-md bg-white p-10 text-center shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Velora Randevu</p>
+          <p className="text-sm font-semibold tracking-[0.2em] text-zinc-400">Velora Randevu</p>
           <h1 className="mt-4 text-3xl font-bold text-zinc-950">Bu sayfa açılamadı</h1>
           <p className="mt-4 text-zinc-600">{pageError || "Salon bulunamadı."}</p>
         </div>
@@ -569,7 +569,7 @@ export default function BookingPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6">
         <div className="max-w-xl rounded-md bg-white p-10 text-center shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Velora Randevu</p>
+          <p className="text-sm font-semibold tracking-[0.2em] text-zinc-400">Velora Randevu</p>
           <h1 className="mt-4 text-3xl font-bold text-zinc-950">Online randevu kapalı</h1>
           <p className="mt-4 text-zinc-600">Bu salon şu anda online randevu kabul etmiyor.</p>
         </div>
@@ -591,7 +591,6 @@ export default function BookingPage() {
             </p>
 
             <div className="mt-12 rounded-md border border-white/10 bg-white/5 p-5 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Özet</p>
               <div className="mt-4 space-y-3 text-sm text-zinc-300">
                 <div className="flex items-center justify-between gap-4">
                   <span>Hizmet</span>
@@ -628,7 +627,7 @@ export default function BookingPage() {
                 >
                   <item.icon size={18} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">{item.label}</span>
+                <span className="text-xs font-semibold tracking-[0.14em] text-zinc-500">{item.label}</span>
               </div>
             ))}
 
@@ -758,7 +757,7 @@ export default function BookingPage() {
 
               <div className="grid gap-5">
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Personel</label>
+                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Personel</label>
                   <div className="relative">
                     <User size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                     <select
@@ -794,7 +793,7 @@ export default function BookingPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Tarih</label>
+                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Tarih</label>
                   <div className="relative">
                     <Calendar size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                     {dateState === "loading" ? (
@@ -832,7 +831,7 @@ export default function BookingPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Saat</label>
+                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Saat</label>
                   <div className="relative">
                     <Clock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                     {availabilityState === "loading" ? (
@@ -892,7 +891,7 @@ export default function BookingPage() {
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Ad</label>
+                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Ad</label>
                   <input
                     type="text"
                     value={formData.name}
@@ -902,7 +901,7 @@ export default function BookingPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Soyad</label>
+                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Soyad</label>
                   <input
                     type="text"
                     value={formData.surname}
@@ -914,7 +913,7 @@ export default function BookingPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Telefon Numarası</label>
+                <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Telefon Numarası</label>
                 <input
                   type="tel"
                   value={formData.phone}
@@ -925,7 +924,7 @@ export default function BookingPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">E-posta (İsteğe bağlı)</label>
+                <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">E-posta (İsteğe bağlı)</label>
                 <input
                   type="email"
                   value={formData.email}
@@ -936,7 +935,7 @@ export default function BookingPage() {
               </div>
 
               <div className="rounded-md border border-zinc-200 bg-white p-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
+                <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
                 <div className="mt-4 space-y-3 text-sm text-zinc-600">
                   <div className="flex items-center justify-between gap-4">
                     <span>Salon</span>
