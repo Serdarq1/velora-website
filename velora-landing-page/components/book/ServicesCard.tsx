@@ -33,7 +33,7 @@ export default function ServicesCard({
     <button
       type="button"
       onClick={() => onToggle(service.id)}
-      className={`flex w-full items-center justify-between gap-5 rounded-3xl border px-5 py-5 text-left transition-all ${
+      className={`flex w-full items-center justify-between gap-5 rounded-md border px-5 py-5 text-left transition-all ${
         isSelected
           ? "border-zinc-900 bg-white shadow-sm"
           : "border-zinc-200 bg-white hover:border-zinc-300"

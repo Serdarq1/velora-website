@@ -556,7 +556,7 @@ export default function BookingPage() {
   if (pageState === "error" || !salon) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6">
-        <div className="max-w-xl rounded-3xl bg-white p-10 text-center shadow-sm">
+        <div className="max-w-xl rounded-md bg-white p-10 text-center shadow-sm">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Velora Randevu</p>
           <h1 className="mt-4 text-3xl font-bold text-zinc-950">Bu sayfa açılamadı</h1>
           <p className="mt-4 text-zinc-600">{pageError || "Salon bulunamadı."}</p>
@@ -568,7 +568,7 @@ export default function BookingPage() {
   if (pageState === "disabled") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6">
-        <div className="max-w-xl rounded-3xl bg-white p-10 text-center shadow-sm">
+        <div className="max-w-xl rounded-md bg-white p-10 text-center shadow-sm">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">Velora Randevu</p>
           <h1 className="mt-4 text-3xl font-bold text-zinc-950">Online randevu kapalı</h1>
           <p className="mt-4 text-zinc-600">Bu salon şu anda online randevu kabul etmiyor.</p>
@@ -590,7 +590,7 @@ export default function BookingPage() {
               Hizmet seçin, uygun saati bulun ve bilgilerinizi bırakın. Geri kalanını sistem tamamlasın.
             </p>
 
-            <div className="mt-12 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+            <div className="mt-12 rounded-md border border-white/10 bg-white/5 p-5 backdrop-blur">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Özet</p>
               <div className="mt-4 space-y-3 text-sm text-zinc-300">
                 <div className="flex items-center justify-between gap-4">
@@ -640,7 +640,7 @@ export default function BookingPage() {
           </div>
 
           {successMessage ? (
-            <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            <div className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
               {successMessage}
             </div>
           ) : null}
@@ -774,7 +774,7 @@ export default function BookingPage() {
                         updateForm("staffId", staffId);
                       }}
                       disabled={staffState === "loading" || !staffOptions.length}
-                      className="w-full appearance-none rounded-2xl border border-zinc-200 bg-white py-4 pl-12 pr-4 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
+                      className="w-full appearance-none rounded-sm border border-zinc-200 bg-white py-4 pl-12 pr-4 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
                     >
                       <option value="">
                         {staffState === "loading"
@@ -810,7 +810,7 @@ export default function BookingPage() {
                         setFormData((current) => ({ ...current, date: event.target.value, hour: "" }));
                       }}
                       disabled={!formData.staffId || dateState === "loading" || !availableDates.length}
-                      className="w-full appearance-none rounded-2xl border border-zinc-200 bg-white py-4 pl-12 pr-12 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
+                      className="w-full appearance-none rounded-sm border border-zinc-200 bg-white py-4 pl-12 pr-12 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
                     >
                       <option value="">
                         {!formData.staffId
@@ -847,7 +847,7 @@ export default function BookingPage() {
                         updateForm("hour", startAt);
                       }}
                       disabled={!formData.staffId || !formData.date || availabilityState === "loading" || !availability?.slots.length}
-                      className="w-full appearance-none rounded-2xl border border-zinc-200 bg-white py-4 pl-12 pr-12 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
+                      className="w-full appearance-none rounded-sm border border-zinc-200 bg-white py-4 pl-12 pr-12 text-base text-zinc-950 outline-none disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
                     >
                       <option value="">
                         {!formData.staffId
@@ -898,7 +898,7 @@ export default function BookingPage() {
                     value={formData.name}
                     onChange={(event) => updateForm("name", event.target.value)}
                     placeholder="Ayşe"
-                    className="w-full rounded-2xl border border-zinc-200 bg-white p-4 outline-none"
+                    className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                   />
                 </div>
                 <div className="space-y-2">
@@ -908,7 +908,7 @@ export default function BookingPage() {
                     value={formData.surname}
                     onChange={(event) => updateForm("surname", event.target.value)}
                     placeholder="Yılmaz"
-                    className="w-full rounded-2xl border border-zinc-200 bg-white p-4 outline-none"
+                    className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                   />
                 </div>
               </div>
@@ -920,7 +920,7 @@ export default function BookingPage() {
                   value={formData.phone}
                   onChange={(event) => updateForm("phone", event.target.value)}
                   placeholder="+90 5xx xxx xx xx"
-                  className="w-full rounded-2xl border border-zinc-200 bg-white p-4 outline-none"
+                  className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                 />
               </div>
 
@@ -931,11 +931,11 @@ export default function BookingPage() {
                   value={formData.email}
                   onChange={(event) => updateForm("email", event.target.value)}
                   placeholder="ornek@mail.com"
-                  className="w-full rounded-2xl border border-zinc-200 bg-white p-4 outline-none"
+                  className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                 />
               </div>
 
-              <div className="rounded-3xl border border-zinc-200 bg-white p-5">
+              <div className="rounded-md border border-zinc-200 bg-white p-5">
                 <p className="text-sm font-semibold uppercase tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
                 <div className="mt-4 space-y-3 text-sm text-zinc-600">
                   <div className="flex items-center justify-between gap-4">
@@ -975,19 +975,19 @@ export default function BookingPage() {
                 type="button"
                 onClick={nextStep}
                 disabled={submitState === "submitting" || !canGoNext}
-                className="w-full rounded-2xl bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-300"
+                className="w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-300"
               >
                 {submitState === "submitting" ? "Onaylanıyor..." : "Randevuyu Onayla"}
               </button>
 
               {submitState === "error" ? (
-                <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                   {submitError}
                 </div>
               ) : null}
 
               {bookingResult ? (
-                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
                   Randevu numarası: {bookingResult.appointment_id}
                 </div>
               ) : null}
