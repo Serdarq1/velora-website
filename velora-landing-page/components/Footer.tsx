@@ -77,8 +77,10 @@ const Footer = ({
             <Image src='/logo_band_colored@3x.png' alt="Iyzcio, mastercard, visa logoları" width={800} height={800} />
           </div>
           <div className="flex flex-col justify-between gap-4 border-t border-white/15 pt-8 text-sm font-medium text-white/70 md:flex-row md:items-center">
-            <p>{copyright}</p>
-            <p>Serdar Ziya Akova</p>
+            <div>
+              <p>{copyright}</p>
+              <p>Serdar Ziya Akova</p>
+            </div>
             <ul className="flex flex-wrap gap-4">
               {bottomLinks.map((link, linkIdx) => (
                 <li
