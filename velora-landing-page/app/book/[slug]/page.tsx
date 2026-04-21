@@ -584,7 +584,7 @@ export default function BookingPage() {
           <div className="relative z-10">
             <Image src="/Velora_white.png" width={96} height={28} alt="Velora" priority />
             <h1 className="mt-12 max-w-md text-4xl font-semibold leading-tight tracking-[-0.05em] md:text-5xl">
-              {salon.name} için randevunuzu birkaç adımda oluşturun.
+              {salon.name} için randevu oluşturmak üzeresiniz.
             </h1>
             <p className="mt-5 max-w-sm text-base leading-7 text-zinc-400">
               Hizmet seçin, uygun saati bulun ve bilgilerinizi bırakın. Geri kalanını sistem tamamlasın.
