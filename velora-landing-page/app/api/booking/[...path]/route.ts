@@ -6,33 +6,38 @@ const SERVICE_TOKEN = process.env.API_SERVICE_TOKEN ?? "";
 type Params = { path: string[] };
 
 async function proxyRequest(request: NextRequest, params: Params, method: string) {
-  const path = params.path.join("/");
-  const { searchParams } = new URL(request.url);
-  const query = searchParams.toString();
-  const targetUrl = `${API_BASE_URL}/api/public/${path}${query ? `?${query}` : ""}`;
+  try {
+    const path = params.path.join("/");
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.toString();
+    const targetUrl = `${API_BASE_URL}/api/public/${path}${query ? `?${query}` : ""}`;
 
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
 
-  if (SERVICE_TOKEN) {
-    headers["Authorization"] = `Bearer ${SERVICE_TOKEN}`;
+    if (SERVICE_TOKEN) {
+      headers["Authorization"] = `Bearer ${SERVICE_TOKEN}`;
+    }
+
+    let body: string | undefined;
+    if (method === "POST") {
+      body = await request.text();
+    }
+
+    const response = await fetch(targetUrl, {
+      method,
+      headers,
+      body,
+      cache: "no-store",
+    });
+
+    const data = await response.json().catch(() => null);
+    return NextResponse.json(data, { status: response.status });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Proxy error";
+    return NextResponse.json({ detail: message }, { status: 502 });
   }
-
-  let body: string | undefined;
-  if (method === "POST") {
-    body = await request.text();
-  }
-
-  const response = await fetch(targetUrl, {
-    method,
-    headers,
-    body,
-    cache: "no-store",
-  });
-
-  const data = await response.json().catch(() => null);
-  return NextResponse.json(data, { status: response.status });
 }
 
 export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
