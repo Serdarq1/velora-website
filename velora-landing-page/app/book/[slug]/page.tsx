@@ -96,7 +96,7 @@ type FormData = {
   services: string[];
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const BOOKING_API = "/api/booking";
 
 const getLocalIsoDate = (value: Date) => {
   const local = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
@@ -178,7 +178,7 @@ export default function BookingPage() {
       setPageError("");
 
       try {
-        const salonResponse = await fetch(`${API_BASE_URL}/api/public/salons/${slug}`, {
+        const salonResponse = await fetch(`${BOOKING_API}/salons/${slug}`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -197,7 +197,7 @@ export default function BookingPage() {
           return;
         }
 
-        const servicesResponse = await fetch(`${API_BASE_URL}/api/public/salons/${slug}/services`, {
+        const servicesResponse = await fetch(`${BOOKING_API}/salons/${slug}/services`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -257,7 +257,7 @@ export default function BookingPage() {
 
       try {
         const query = new URLSearchParams({ service_ids: formData.services.join(",") });
-        const response = await fetch(`${API_BASE_URL}/api/public/salons/${slug}/staff?${query.toString()}`, {
+        const response = await fetch(`${BOOKING_API}/salons/${slug}/staff?${query.toString()}`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -314,7 +314,7 @@ export default function BookingPage() {
           start_date: getLocalIsoDate(new Date()),
           days: "21",
         });
-        const response = await fetch(`${API_BASE_URL}/api/public/salons/${slug}/availability/dates?${query.toString()}`, {
+        const response = await fetch(`${BOOKING_API}/salons/${slug}/availability/dates?${query.toString()}`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -363,7 +363,7 @@ export default function BookingPage() {
           staff_id: formData.staffId,
           date: formData.date,
         });
-        const response = await fetch(`${API_BASE_URL}/api/public/salons/${slug}/availability?${query.toString()}`, {
+        const response = await fetch(`${BOOKING_API}/salons/${slug}/availability?${query.toString()}`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -514,7 +514,7 @@ export default function BookingPage() {
 
     try {
       const clientName = `${formData.name.trim()} ${formData.surname.trim()}`.trim();
-      const response = await fetch(`${API_BASE_URL}/api/public/salons/${slug}/appointments`, {
+      const response = await fetch(`${BOOKING_API}/salons/${slug}/appointments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

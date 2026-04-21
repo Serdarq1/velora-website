@@ -1,7 +1,8 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { Headset, Clock3, ShieldCheck, type LucideIcon } from "lucide-react";
+import { Headset, Clock3, type LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +15,35 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const features: { icon: LucideIcon; title: string; description: string }[] = [
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+  >
+    <path d="M19.05 4.94A9.87 9.87 0 0 0 12.02 2C6.5 2 2 6.48 2 12c0 1.77.46 3.5 1.35 5.02L2 22l5.12-1.32A9.95 9.95 0 0 0 12.02 22C17.53 22 22 17.52 22 12a9.9 9.9 0 0 0-2.95-7.06Zm-7.03 15.38a8.3 8.3 0 0 1-4.22-1.15l-.3-.18-3.04.78.81-2.96-.2-.31A8.27 8.27 0 0 1 3.7 12a8.33 8.33 0 0 1 8.32-8.32 8.27 8.27 0 0 1 5.89 2.44A8.24 8.24 0 0 1 20.34 12a8.33 8.33 0 0 1-8.32 8.32Zm4.57-6.24c-.25-.13-1.47-.73-1.7-.81-.23-.08-.4-.13-.57.12-.17.25-.65.81-.8.98-.15.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.25-.74-.66-1.24-1.48-1.39-1.73-.15-.25-.02-.38.11-.5.12-.12.25-.29.38-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.57-1.37-.78-1.88-.21-.5-.42-.43-.57-.44h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.09 0 1.23.9 2.42 1.02 2.58.13.17 1.76 2.69 4.27 3.77.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29Z" />
+  </svg>
+);
+
+type Feature = {
+  icon: LucideIcon | typeof WhatsAppIcon;
+  title: string;
+  description: string;
+  href?: string;
+  ctaLabel?: string;
+  cardClassName?: string;
+  iconWrapClassName?: string;
+  iconClassName?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
+  ctaClassName?: string;
+};
+
+const whatsappNumber = "+90 850 840 17 62";
+const whatsappUrl = "https://wa.me/908508401762";
+
+const features: Feature[] = [
   {
     icon: Headset,
     title: "7/24 destek",
@@ -26,7 +55,22 @@ const features: { icon: LucideIcon; title: string; description: string }[] = [
     title: "Hızlı çözüm akışı",
     description:
       "Önceliğinizi belirtin, size en uygun kanaldan hızlıca geri dönüş yapalım.",
-  }
+  },
+  {
+    icon: WhatsAppIcon,
+    title: "WhatsApp destek hattı",
+    description:
+      "WhatsApp üzerinden bizimle iletişime geçin, en kısa şekilde sorununuzu çözelim.",
+    href: whatsappUrl,
+    ctaLabel: whatsappNumber,
+    cardClassName:
+      "border-emerald-200 bg-[linear-gradient(135deg,rgba(16,185,129,0.16),rgba(255,255,255,0.96))] hover:border-emerald-400 hover:shadow-[0_20px_65px_-38px_rgba(16,185,129,0.7)]",
+    iconWrapClassName: "text-emerald-700",
+    iconClassName: "h-5 w-5",
+    titleClassName: "text-emerald-950",
+    descriptionClassName: "text-emerald-900/80",
+    ctaClassName: "text-emerald-700 hover:text-emerald-800",
+  },
 ];
 
 const topics = [
@@ -133,22 +177,52 @@ const ContactPage = () => {
           </div>
 
           <div className="space-y-5">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="flex gap-4 rounded-xl border border-gray-200 bg-white/80 p-3 shadow-[0_12px_50px_-40px_rgba(99,51,238,0.55)] transition hover:border-primary/30 hover:shadow-[0_16px_60px_-35px_rgba(99,51,238,0.6)]"
-              >
-                <div className="mt-1 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <feature.icon className="h-5 w-5" />
+            {features.map((feature) => {
+              const content = (
+                <div
+                  className={`flex gap-4 rounded-xl border border-gray-200 bg-white/80 p-3 shadow-[0_12px_50px_-40px_rgba(99,51,238,0.55)] transition hover:border-primary/30 hover:shadow-[0_16px_60px_-35px_rgba(99,51,238,0.6)] ${feature.cardClassName ?? ""}`}
+                >
+                  <div
+                    className={`mt-1 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary ${feature.iconWrapClassName ?? ""}`}
+                  >
+                    <feature.icon className={feature.iconClassName ?? "h-5 w-5"} />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className={`text-lg font-semibold ${feature.titleClassName ?? ""}`}>
+                      {feature.title}
+                    </h3>
+                    <p
+                      className={`text-sm text-muted-foreground sm:text-base ${feature.descriptionClassName ?? ""}`}
+                    >
+                      {feature.description}
+                    </p>
+                    {feature.ctaLabel ? (
+                      <p
+                        className={`inline-flex items-center gap-2 pt-2 text-sm font-medium transition ${feature.ctaClassName ?? "text-primary hover:text-primary/80"}`}
+                      >
+                        <span>{feature.ctaLabel}</span>
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <h3 className="text-lg font-semibold">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground sm:text-base">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+
+              if (feature.href) {
+                return (
+                  <Link
+                    key={feature.title}
+                    href={feature.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2"
+                  >
+                    {content}
+                  </Link>
+                );
+              }
+
+              return <div key={feature.title}>{content}</div>;
+            })}
           </div>
         </section>
 

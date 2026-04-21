@@ -36,8 +36,8 @@ const Navigation = () => {
 
   return (
     <nav className="relative z-30 w-full">
-      <div className="navbar-ambient relative hidden w-full items-center justify-between gap-3 lg:flex">
-        <div className="flex shrink-0 items-center gap-2 font-semibold tracking-tight">
+      <div className="navbar-ambient relative hidden w-full grid-cols-[1fr_auto_1fr] items-center gap-3 lg:grid">
+        <div className="flex items-center gap-2 font-semibold tracking-tight justify-self-start">
           <Link href="/">
             <Image
               alt="velora-logo"
@@ -49,8 +49,8 @@ const Navigation = () => {
           </Link>
         </div>
 
-        <NavigationMenu className="flex-1 justify-center">
-          <NavigationMenuList className="flex w-full flex-wrap items-center justify-center gap-2">
+        <NavigationMenu className="w-auto flex-none justify-self-center">
+          <NavigationMenuList className="flex w-auto flex-wrap items-center justify-center gap-2">
             {navItems.map((item) => (
               <NavigationMenuItem key={item.href}>
                 <NavigationMenuLink
@@ -64,7 +64,7 @@ const Navigation = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex items-center gap-2 justify-self-end">
           <Link href={waitlistUrl}>
             <Button variant="ghost" size="sm" className="cursor-pointer">
               Giriş Yap
