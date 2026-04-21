@@ -42,9 +42,9 @@ const Navigation = () => {
             <Image
               alt="velora-logo"
               src="/Velora.png"
-              height={80}
-              width={80}
-              className="h-16 w-16"
+              height={120}
+              width={120}
+              className="h-22 w-22"
             />
           </Link>
         </div>

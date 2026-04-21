@@ -65,7 +65,7 @@ const Features = ({
     },
   ],
   buttonText = "Tüm Özellikler",
-  buttonUrl = "https://shadcnblocks.com",
+  buttonUrl = "/pricing",
   className,
 }: FeaturesProps) => {
   return (

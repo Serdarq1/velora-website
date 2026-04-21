@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/Hero";
 import { Pricing } from "@/components/Pricing";
 import { ProductLayout } from "@/components/ProductLayout";
@@ -9,6 +10,21 @@ import { HelpCenter }  from "@/components/HelpCenter";
 import { Footer } from "@/components/Footer";
 import { CallToAction } from "@/components/CallToAction";
 import { Faq } from "@/components/Faq";
+
+export const metadata: Metadata = {
+  title: "Velora | Akıllı Salon Yönetim Yazılımı",
+  description:
+    "Randevu al, personelini yönet, gelirini takip et | hepsi tek uygulamada. Kuaför, güzellik salonu ve spa işletmelerinin tercih ettiği modern salon yazılımı.",
+  alternates: {
+    canonical: "https://veloraappy.com",
+  },
+  openGraph: {
+    title: "Velora | Akıllı Salon Yönetim Yazılımı",
+    description:
+      "Randevu al, personelini yönet, gelirini takip et | hepsi tek uygulamada. Kuaför, güzellik salonu ve spa işletmelerinin tercih ettiği modern salon yazılımı.",
+    url: "https://veloraappy.com",
+  },
+};
 
 export default function Home() {
   return (

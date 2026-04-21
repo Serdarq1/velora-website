@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { About } from '@/components/About'
 import { CallToAction } from '@/components/CallToAction'
 import { Faq } from '@/components/Faq'
@@ -6,6 +7,21 @@ import { HelpCenter } from '@/components/HelpCenter'
 import Navigation from '@/components/Navigation'
 import { getWaitlistUrl } from '@/lib/waitlist-url'
 import React from 'react'
+
+export const metadata: Metadata = {
+  title: "Hakkımızda",
+  description:
+    "Velora, kuaför ve güzellik salonu işletmecilerinin günlük operasyonlarını kolaylaştırmak için kuruldu. Ekibimizi, misyonumuzu ve sizi neden seçmemiz gerektiğini keşfedin.",
+  alternates: {
+    canonical: "https://veloraappy.com/about",
+  },
+  openGraph: {
+    title: "Hakkımızda | Velora",
+    description:
+      "Velora, kuaför ve güzellik salonu işletmecilerinin günlük operasyonlarını kolaylaştırmak için kuruldu. Ekibimizi ve misyonumuzu keşfedin.",
+    url: "https://veloraappy.com/about",
+  },
+};
 
 const waitlistUrl = getWaitlistUrl();
 
@@ -28,7 +44,7 @@ const page = () => {
             title: "Birkaç tık ile kullanmaya başlayın.",
             description:
               "Kurulum, ekip daveti ve veri aktarımları da dahil olmak üzere sadece birkaç tıkta panelinizi hazır hale getirin.",
-            buttonText: "Demo planla",
+            buttonText: "Hesap oluştur",
             buttonUrl: waitlistUrl,
           }}
         />

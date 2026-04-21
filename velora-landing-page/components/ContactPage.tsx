@@ -158,11 +158,11 @@ const ContactPage = () => {
     <section className="relative isolate overflow-x-clip px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pt-16">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-20 bottom-0 [background:radial-gradient(130%_120%_at_85%_70%,rgba(99,51,238,0.18),transparent_55%)]"
+        className="pointer-events-none absolute inset-x-0 -top-20 bottom-0"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-20 bottom-0 [background:radial-gradient(110%_110%_at_20%_25%,rgba(141,88,255,0.16),transparent_52%)]"
+        className="pointer-events-none absolute inset-x-0 -top-20 bottom-0"
       />
       <div className="relative mx-auto grid w-full max-w-6xl grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(440px,520px)] lg:gap-12">
         <section className="mx-auto w-full max-w-2xl space-y-8 lg:mx-0 lg:max-w-xl">
