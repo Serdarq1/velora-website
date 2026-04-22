@@ -642,12 +642,6 @@ export default function BookingPage() {
             />
           </div>
 
-          {successMessage ? (
-            <div className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-              {successMessage}
-            </div>
-          ) : null}
-
           {step === 1 ? (
             <section className="space-y-6">
               <div className="flex items-start justify-between gap-4">
@@ -986,6 +980,12 @@ export default function BookingPage() {
               {submitState === "error" ? (
                 <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                   {submitError}
+                </div>
+              ) : null}
+
+              {successMessage ? (
+                <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                  {successMessage}
                 </div>
               ) : null}
 
