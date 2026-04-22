@@ -98,6 +98,12 @@ type FormData = {
 
 const BOOKING_API = "/api/booking";
 
+const normalizePhone = (value: string) => {
+  const digits = value.replace(/\D/g, "");
+  const base = digits.replace(/^(90|0)/, "");
+  return base ? "90" + base : "";
+};
+
 const getLocalIsoDate = (value: Date) => {
   const local = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
   return local.toISOString().slice(0, 10);
@@ -522,7 +528,7 @@ export default function BookingPage() {
           start_at: selectedSlot.start_at,
           staff_id: formData.staffId,
           client_name: clientName,
-          client_phone: formData.phone.trim(),
+          client_phone: normalizePhone(formData.phone),
           client_email: formData.email.trim() || null,
         }),
       });
@@ -539,9 +545,7 @@ export default function BookingPage() {
 
       const payload: BookingResult = await response.json();
       setBookingResult(payload);
-      setSuccessMessage(
-        `Randevunuz oluşturuldu. Başlangıç saati ${formatHour(payload.start_at, salon?.booking_timezone ?? "Europe/Istanbul")}.`,
-      );
+      setSuccessMessage("Randevu başarıyla oluşturuldu");
       setSubmitState("success");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Randevu oluşturulamadı.");
@@ -985,11 +989,6 @@ export default function BookingPage() {
                 </div>
               ) : null}
 
-              {bookingResult ? (
-                <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-                  Randevu numarası: {bookingResult.appointment_id}
-                </div>
-              ) : null}
             </section>
           ) : null}
         </main>
