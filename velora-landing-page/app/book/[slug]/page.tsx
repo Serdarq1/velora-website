@@ -660,67 +660,75 @@ export default function BookingPage() {
                 </button>
               </div>
 
-              <div className="sticky top-0 z-20 -mx-2 px-2 py-3 backdrop-blur">
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => scrollCategories("left")}
-                    className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100 lg:grid"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <div ref={categoriesScrollRef} className="flex min-w-0 flex-1 gap-3 overflow-x-auto pb-2">
-                    {categories.map((category) => (
-                      <button
-                        key={category}
-                        ref={(element) => {
-                          categoryButtonRefs.current[category] = element;
-                        }}
-                        type="button"
-                        onClick={() => scrollToCategory(category)}
-                        className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-                          activeCategory === category
-                            ? "bg-zinc-950 text-white"
-                            : "bg-white text-zinc-700 hover:text-zinc-950"
-                        }`}
-                      >
-                        {category}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => scrollCategories("right")}
-                    className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100 lg:grid"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-              </div>
-
-              <div className="space-y-8">
-                {servicesByCategory.map(({ category, services: categoryServices }) => (
-                  <div
-                    key={category}
-                    ref={(element) => {
-                      categorySectionRefs.current[category] = element;
-                    }}
-                    data-category={category}
-                    className="scroll-mt-28 space-y-4"
-                  >
-                    <h3 className="text-2xl font-semibold tracking-[-0.04em] text-zinc-950">{category}</h3>
-                    <div className="space-y-4">
-                      {categoryServices.map((service) => (
-                        <ServicesCard
-                          key={service.id}
-                          service={service}
-                          isSelected={formData.services.includes(service.id)}
-                          onToggle={toggleService}
-                        />
+              {categories.length ? (
+                <div className="sticky top-0 z-20 -mx-2 px-2 py-3 backdrop-blur">
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => scrollCategories("left")}
+                      className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100 lg:grid"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
+                    <div ref={categoriesScrollRef} className="flex min-w-0 flex-1 gap-3 overflow-x-auto pb-2">
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          ref={(element) => {
+                            categoryButtonRefs.current[category] = element;
+                          }}
+                          type="button"
+                          onClick={() => scrollToCategory(category)}
+                          className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                            activeCategory === category
+                              ? "bg-zinc-950 text-white"
+                              : "bg-white text-zinc-700 hover:text-zinc-950"
+                          }`}
+                        >
+                          {category}
+                        </button>
                       ))}
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => scrollCategories("right")}
+                      className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100 lg:grid"
+                    >
+                      <ChevronRight size={18} />
+                    </button>
                   </div>
-                ))}
+                </div>
+              ) : null}
+
+              <div className="space-y-8">
+                {services.length ? (
+                  servicesByCategory.map(({ category, services: categoryServices }) => (
+                    <div
+                      key={category}
+                      ref={(element) => {
+                        categorySectionRefs.current[category] = element;
+                      }}
+                      data-category={category}
+                      className="scroll-mt-28 space-y-4"
+                    >
+                      <h3 className="text-2xl font-semibold tracking-[-0.04em] text-zinc-950">{category}</h3>
+                      <div className="space-y-4">
+                        {categoryServices.map((service) => (
+                          <ServicesCard
+                            key={service.id}
+                            service={service}
+                            isSelected={formData.services.includes(service.id)}
+                            onToggle={toggleService}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-md border border-zinc-200 bg-white px-5 py-6 text-sm text-zinc-600">
+                    Bu salon henüz bir hizmet oluşturmadı
+                  </div>
+                )}
               </div>
             </section>
           ) : null}
