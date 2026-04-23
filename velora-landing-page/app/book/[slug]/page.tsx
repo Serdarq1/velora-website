@@ -591,7 +591,7 @@ export default function BookingPage() {
               {salon.name} için randevu oluşturmak üzeresiniz.
             </h1>
             <p className="mt-5 max-w-sm text-base leading-7 text-zinc-400">
-              Hizmet seçin, uygun saati bulun ve bilgilerinizi bırakın. Geri kalanını sistem tamamlasın.
+              Sadece birkaç tıkta randevunuzu oluşturun.
             </p>
 
             <div className="mt-12 rounded-md border border-white/10 bg-white/5 p-5 backdrop-blur">
