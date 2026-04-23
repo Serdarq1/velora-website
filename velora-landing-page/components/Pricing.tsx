@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, CircleQuestionMark } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -55,6 +55,7 @@ const Pricing = ({
       features: [
         { text: "Randevu yönetimi" },
         { text: "Online randevu alma" },
+        { text: "Hatırlatma, onay ve iptal mesajları*" },
         { text: "Ekip takvimi" },
         { text: "Google takvim entegrasyonu" },
         { text: "Hizmet yönetimi" },
@@ -66,8 +67,8 @@ const Pricing = ({
         { text: "Ürün satışı yönetimi" },
         { text: "Ürün yönetimi" },
         { text: "Envanter takibi" },
-        { text: "Whatsapp entegrasyonu" },
-        { text: "Instagram entegrasyonu" },
+        { text: "Whatsapp entegrasyonu (Yakında)" },
+        { text: "Instagram entegrasyonu (Yakında)" },
         { text: "Detaylı personel analizi" },
         { text: "Detaylı müşteri analizi" },
       ],
@@ -146,7 +147,7 @@ const Pricing = ({
                         key={index}
                         className="flex items-center gap-2 text-sm"
                       >
-                        <CircleCheck className="size-4" />
+                        {feature.text === "Whatsapp entegrasyonu (Yakında)" ? <CircleQuestionMark className="size-4" /> : feature.text === "Instagram entegrasyonu (Yakında)" ? <CircleQuestionMark className="size-4" /> : <CircleCheck className="size-4" />}
                         <span>{feature.text}</span>
                       </li>
                     ))}
@@ -164,7 +165,9 @@ const Pricing = ({
                 </CardFooter>
               </Card>
             ))}
+            
           </div>
+          <p>*Aylık toplamda 1000 adet hatırlatma, onay ve iptal mesajı ücretsizdir. Sonrasında mesaj başı 0.15₺ olacak şekilde ücretlendirilir. </p>
         </div>
       </div>
     </section>

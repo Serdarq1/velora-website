@@ -1,5 +1,5 @@
 import React from "react";
-import { Check } from "lucide-react";
+import { Check, CircleQuestionMark } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -18,6 +18,7 @@ interface CompareProps {
 const packageFeatures = [
   "Randevu yönetimi",
   "Online randevu alma",
+  "Otomatik hatırlatma, onay ve iptal mesajları",
   "Ekip takvimi",
   "Google takvim entegrasyonu",
   "Hizmet yönetimi",
@@ -74,7 +75,7 @@ const Compare = ({ className }: CompareProps) => {
                       index !== packageFeatures.length - 1 && "border-b border-muted/30"
                     )}
                   >
-                    <Check className="mx-auto size-5 text-emerald-500" />
+                    {feature == "Whatsapp entegrasyonu" ? <CircleQuestionMark className="mx-auto size-5 text-blue-500" /> : feature == "Instagram entegrasyonu" ? <CircleQuestionMark className="mx-auto size-5 text-blue-500" /> : <Check className="mx-auto size-5 text-emerald-500" />}
                   </TableCell>
                 </TableRow>
               ))}

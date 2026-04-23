@@ -15,6 +15,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const waitlistUrl = getWaitlistUrl();
+const appUrl = "https://dashboard.veloraappy.com"
 
 const navItems = [
   { href: "/about", label: "Hakkımızda" },
@@ -65,12 +66,12 @@ const Navigation = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2 justify-self-end">
-          <Link href={waitlistUrl}>
+          <Link href={`${appUrl}/sign-in`}>
             <Button variant="ghost" size="sm" className="cursor-pointer">
               Giriş Yap
             </Button>
           </Link>
-          <Link href={waitlistUrl}>
+          <Link href={`${appUrl}/sign-up`}>
             <Button size="sm" className="cursor-pointer">
               Kayıt Ol
             </Button>
