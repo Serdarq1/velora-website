@@ -1,5 +1,6 @@
 "use client"
 
+import DockLive from "./dock-live"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { useState } from "react"
@@ -70,10 +71,10 @@ const Hero = () => {
              <div className="w-full flex justify-center">
               {message ? <p className="text-sm text-neutral-600"> {message} </p> : null}
             </div>
-            {/* <p className=" text-sm sm:text-lg text-neutral-600 dark:text-neutral-300">
+            <p className=" text-sm sm:text-lg text-neutral-600 dark:text-neutral-300">
             Bizi sosyal medyada takip edin.
-          </p> */}
-            {/* <DockLive /> */}
+          </p>
+             <DockLive />
           </form>
          
         </div>

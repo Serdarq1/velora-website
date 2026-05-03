@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "salon uygulaması",
     "personel yönetimi",
     "müşteri takip sistemi",
+    "randevu yazılımı",
   ],
   authors: [{ name: "Velora" }],
   creator: "Velora",
@@ -87,7 +88,7 @@ const organizationSchema = {
     availableLanguage: "Turkish",
   },
   sameAs: [
-    "https://www.instagram.com/veloraappy",
+    "https://www.instagram.com/appvelora",
   ],
 };
 

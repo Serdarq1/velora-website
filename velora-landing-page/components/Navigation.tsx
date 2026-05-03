@@ -10,12 +10,11 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { getWaitlistUrl } from "@/lib/waitlist-url";
 import Link from "next/link";
 import Image from "next/image";
 
-const waitlistUrl = getWaitlistUrl();
-const appUrl = "https://dashboard.veloraappy.com"
+const appSignInUrl = "https://dashboard.veloraappy.com"
+const appSignUpURL = "https://dashboard.veloraappy.com/sign-up"
 
 const navItems = [
   { href: "/about", label: "Hakkımızda" },
@@ -66,12 +65,12 @@ const Navigation = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2 justify-self-end">
-          <Link href={`${appUrl}/sign-in`}>
+          <Link href={appSignInUrl}>
             <Button variant="ghost" size="sm" className="cursor-pointer">
               Giriş Yap
             </Button>
           </Link>
-          <Link href={`${appUrl}/sign-up`}>
+          <Link href={appSignUpURL}>
             <Button size="sm" className="cursor-pointer">
               Kayıt Ol
             </Button>
@@ -177,7 +176,7 @@ const Navigation = () => {
             }`}
             style={{ transitionDelay: isOpen ? "320ms" : "0ms" }}
           >
-            <Link href={waitlistUrl} onClick={() => setIsOpen(false)} className="block">
+            <Link href={appSignUpURL} onClick={() => setIsOpen(false)} className="block">
               <Button
                 size="lg"
                 className="h-12 w-full rounded-full text-base font-semibold shadow-none"
@@ -185,7 +184,7 @@ const Navigation = () => {
                 Kayıt Ol
               </Button>
             </Link>
-            <Link href={waitlistUrl} onClick={() => setIsOpen(false)} className="block">
+            <Link href={appSignInUrl} onClick={() => setIsOpen(false)} className="block">
               <Button
                 variant="ghost"
                 size="lg"

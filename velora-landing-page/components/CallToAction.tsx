@@ -1,11 +1,10 @@
 import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { getWaitlistUrl } from "@/lib/waitlist-url";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const waitlistUrl = getWaitlistUrl();
+const appSignUpURL = "https://dashboard.veloraappy.com/sign-up" 
 
 interface CallToActionProps {
   title?: string;
@@ -19,7 +18,7 @@ const CallToAction = ({
   title = "Ne bekliyorsunuz?",
   subtitle = "Salonunuza özel destek alın ve bugün büyümeye başlayın.",
   buttonText = "Hemen başlayın",
-  buttonHref = waitlistUrl,
+  buttonHref = appSignUpURL,
   className,
 }: CallToActionProps) => {
   return (

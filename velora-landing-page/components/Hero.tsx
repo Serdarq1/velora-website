@@ -1,14 +1,14 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
-import { getWaitlistUrl } from "@/lib/waitlist-url";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import Navigation from "@/components/Navigation";
 
-const waitlistUrl = getWaitlistUrl();
+const appSignUpURL = "https://dashboard.veloraappy.com/sign-up"
+
 
 interface Hero {
   heading?: string;
@@ -26,7 +26,7 @@ const Hero = ({
   description = "A'dan Z'ye salon yönetiminiz için gerekli her özelliği içeren yeni nesil yönetim uygulaması ile tüm belgelerinizi tek yerde toplayın, zamandan kazanın ve cironuzu arttırın.  ",
   button = {
     text: "Detayları Gör",
-    url: waitlistUrl,
+    url: appSignUpURL,
   },
   className,
 }: Hero) => {

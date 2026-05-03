@@ -5,7 +5,6 @@ import { Faq } from '@/components/Faq'
 import { Footer } from '@/components/Footer'
 import { HelpCenter } from '@/components/HelpCenter'
 import Navigation from '@/components/Navigation'
-import { getWaitlistUrl } from '@/lib/waitlist-url'
 import React from 'react'
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-const waitlistUrl = getWaitlistUrl();
+const appSignUpURL = "https://dashboard.veloraappy.com/sign-up"
 
 const page = () => {
   return (
@@ -45,7 +44,7 @@ const page = () => {
             description:
               "Kurulum, ekip daveti ve veri aktarımları da dahil olmak üzere sadece birkaç tıkta panelinizi hazır hale getirin.",
             buttonText: "Hesap oluştur",
-            buttonUrl: waitlistUrl,
+            buttonUrl: appSignUpURL,
           }}
         />
       </div>

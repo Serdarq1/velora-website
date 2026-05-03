@@ -4,12 +4,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { getWaitlistUrl } from "@/lib/waitlist-url";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const waitlistUrl = getWaitlistUrl();
+const appSignUpURL = "https://dashboard.veloraappy.com/sign-up"
 
 interface ProductSectionProps {
   className?: string;
@@ -78,9 +77,9 @@ const ProductSection = ({ className }: ProductSectionProps) => {
               <span><strong>Otomatik hatırlatma ve onay mesajları</strong> ile randevu iptal oranını düşürün.</span>
             </li>
           </ul>
-            <Link href={waitlistUrl} className="w-full sm:w-auto">
+            <Link href={appSignUpURL} className="w-full sm:w-auto">
              <Button className="w-full sm:w-auto">
-               Demo talep et
+               Hesap oluştur
              </Button>
             </Link>
         </div>
