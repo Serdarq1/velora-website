@@ -316,10 +316,10 @@ export default function BookingPage() {
       try {
         const query = new URLSearchParams({
           service_ids: formData.services.join(","),
-          staff_id: formData.staffId,
           start_date: getLocalIsoDate(new Date()),
           days: "21",
         });
+        if (resolvedStaffIdForApi) query.set("staff_id", resolvedStaffIdForApi);
         const response = await fetch(`${BOOKING_API}/salons/${slug}/availability/dates?${query.toString()}`, {
           cache: "no-store",
           signal: controller.signal,
@@ -366,9 +366,9 @@ export default function BookingPage() {
       try {
         const query = new URLSearchParams({
           service_ids: formData.services.join(","),
-          staff_id: formData.staffId,
           date: formData.date,
         });
+        if (resolvedStaffIdForApi) query.set("staff_id", resolvedStaffIdForApi);
         const response = await fetch(`${BOOKING_API}/salons/${slug}/availability?${query.toString()}`, {
           cache: "no-store",
           signal: controller.signal,
@@ -399,7 +399,10 @@ export default function BookingPage() {
     () => services.filter((service) => formData.services.includes(service.id)),
     [formData.services, services],
   );
+  const isAnyStaff = (staffId: string) => !staffId || staffId === "any" || staffId.startsWith("owner:");
+  const resolvedStaffIdForApi = isAnyStaff(formData.staffId) ? null : formData.staffId;
   const selectedStaff = staffOptions.find((staff) => staff.id === formData.staffId) ?? null;
+  const selectedStaffName = formData.staffId === "any" ? "Fark etmez" : (selectedStaff?.name || "-");
   const totalSelectedDuration = selectedServices.reduce((sum, service) => sum + Number(service.duration_min ?? 0), 0);
   const totalSelectedPrice = selectedServices.reduce((sum, service) => sum + Number(service.price ?? 0), 0);
   const bookingCurrency =
@@ -526,7 +529,7 @@ export default function BookingPage() {
         body: JSON.stringify({
           service_ids: formData.services,
           start_at: selectedSlot.start_at,
-          staff_id: formData.staffId,
+          staff_id: resolvedStaffIdForApi,
           client_name: clientName,
           client_phone: normalizePhone(formData.phone),
           client_email: formData.email.trim() || null,
@@ -788,6 +791,9 @@ export default function BookingPage() {
                             ? "Personel seçin"
                             : "Bu hizmetler için uygun personel yok"}
                       </option>
+                      {staffOptions.length > 0 && (
+                        <option value="any">Fark etmez</option>
+                      )}
                       {staffOptions.map((staff) => (
                         <option key={staff.id} value={staff.id}>
                           {staff.name}
@@ -955,7 +961,7 @@ export default function BookingPage() {
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <span>Personel</span>
-                    <span className="font-semibold text-zinc-950">{selectedStaff?.name || "-"}</span>
+                    <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <span>Tarih</span>
