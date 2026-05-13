@@ -15,32 +15,32 @@ interface ReferralsProps {
 
 const Referrals = ({
   title = "Referanslar",
-  subtitle = "Memnuniyetle bizi seçen salonlar",
+  subtitle = "Memnuniyetle bizi seçen işletmeler",
   logos = [
     {
-      name: "Vercel",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/vercel-wordmark.svg",
-      className: "h-7 w-auto",
+      name: "Shining Brows",
+      logo: "subscriber_logos/shiningbrows.jpg",
+      className: "h-20 w-auto",
     },
     {
-      name: "Astro",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-wordmark.svg",
-      className: "h-5 w-auto",
+      name: "Ceren Ayhan Beauty",
+      logo: "subscriber_logos/cerenayhanbeauty.jpg",
+      className: "h-20 w-auto",
     },
     {
-      name: "Supabase",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/supabase-wordmark.svg",
-      className: "h-6 w-auto",
+      name: "Eylül Güzellik",
+      logo: "subscriber_logos/eylulguzellik.jpg",
+      className: "h-20 w-auto",
     },
     {
-      name: "Figma",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/figma-wordmark.svg",
-      className: "h-5 w-auto",
+      name: "Gamze Güven Nail Studio",
+      logo: "subscriber_logos/gg.jpg",
+      className: "h-20 w-auto",
     },
     {
-      name: "Astro",
-      logo: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/astro-wordmark.svg",
-      className: "h-6 w-auto",
+      name: "Reci",
+      logo: "subscriber_logos/Reci.jpg",
+      className: "h-20 w-auto",
     },
   ],
   className,

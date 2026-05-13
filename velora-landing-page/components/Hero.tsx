@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import Navigation from "@/components/Navigation";
+import Link from "next/link";
+import { AppStore } from "./AppStore";
 
 const appSignUpURL = "https://dashboard.veloraappy.com/sign-up"
 
@@ -68,6 +70,7 @@ const Hero = ({
               />
             </div>
           </div>
+            <AppStore />
         </div>
       </section>
     </div>

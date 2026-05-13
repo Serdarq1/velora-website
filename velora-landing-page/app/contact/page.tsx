@@ -31,7 +31,7 @@ const page = () => {
         <ContactPage />
         <div className="w-full">
           <div className="mb-20">
-            {/* <Referrals /> */}
+            <Referrals />
             <Faq />
             <CallToAction />
           </div>

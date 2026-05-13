@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { AppStore } from "./AppStore";
 
 const appSignUpURL = "https://dashboard.veloraappy.com/sign-up" 
 
@@ -22,6 +23,7 @@ const CallToAction = ({
   className,
 }: CallToActionProps) => {
   return (
+<>
     <section
       className={cn(
         "relative isolate overflow-hidden px-5 py-16 text-white sm:px-10 sm:py-24",
@@ -57,6 +59,9 @@ const CallToAction = ({
         </Button>
       </div>
     </section>
+    
+    <AppStore />
+    </>
   );
 };
 

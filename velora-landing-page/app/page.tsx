@@ -33,7 +33,7 @@ export default function Home() {
       <Section />
       <ProductSection />
       <ProductMain heading={"Salon operasyonlarınızı yönetmenin en kolay yolu."} />
-      {/* <Referrals /> */}
+      <Referrals />
       <ProductLayout title="Tüm ihtiyaçlarınız için tek bir uygulama." description="Tek tıkla tüm salonunuzu yönetin, cironuzu katlayın." />
       <Pricing />
       <CallToAction />
