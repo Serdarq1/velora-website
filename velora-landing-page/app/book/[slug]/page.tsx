@@ -791,7 +791,7 @@ export default function BookingPage() {
                             ? "Personel seçin"
                             : "Bu hizmetler için uygun personel yok"}
                       </option>
-                      {staffOptions.length > 0 && (
+                      {staffOptions.length > 1 && (
                         <option value="any">Fark etmez</option>
                       )}
                       {staffOptions.map((staff) => (
