@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import {
   Calendar,
+  CheckCircle,
   ChevronLeft,
   ChevronRight,
   Clock,
@@ -584,6 +585,107 @@ export default function BookingPage() {
     );
   }
 
+  if (submitState === "success" && salon) {
+    const resetBooking = () => {
+      setStep(1);
+      setSelectedSlot(null);
+      setAvailability(null);
+      setAvailabilityState("idle");
+      setAvailabilityError("");
+      setAvailableDates([]);
+      setDateState("idle");
+      setDateError("");
+      setSubmitState("idle");
+      setSubmitError("");
+      setSuccessMessage("");
+      setBookingResult(null);
+      setFormData((current) => ({ ...current, staffId: "", date: "", hour: "" }));
+    };
+
+    return (
+      <div className="min-h-screen bg-zinc-50">
+        <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col md:flex-row">
+          <aside className="relative overflow-hidden bg-[#070b10] px-8 py-10 text-white md:w-2/5 md:px-12 md:py-12">
+            <div className="relative z-10">
+              <Image src="/Velora_white.png" width={96} height={28} alt="Velora" priority />
+              <h1 className="mt-12 max-w-md text-4xl font-semibold leading-tight tracking-[-0.05em] md:text-5xl">
+                {salon.name}
+              </h1>
+            </div>
+            <div className="absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#8f4f3a]/25 blur-3xl" />
+            <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-[#f1d6ca]/10 blur-3xl" />
+          </aside>
+
+          <main className="flex flex-1 items-center justify-center px-6 py-12 md:px-12">
+            <div className="w-full max-w-md text-center">
+              <div className="flex justify-center">
+                <CheckCircle size={56} className="text-emerald-500" strokeWidth={1.5} />
+              </div>
+              <h2 className="mt-6 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">
+                Randevunuz oluşturuldu!
+              </h2>
+              <p className="mt-3 text-zinc-500">
+                Randevunuz başarıyla kaydedildi. Sizi bekliyoruz!
+              </p>
+
+              <div className="mt-8 rounded-md border border-zinc-200 bg-white p-5 text-left">
+                <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
+                <div className="mt-4 space-y-3 text-sm text-zinc-600">
+                  <div className="flex items-center justify-between gap-4">
+                    <span>Salon</span>
+                    <span className="font-semibold text-zinc-950">{salon.name}</span>
+                  </div>
+                  {selectedServices.length ? (
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Hizmet</span>
+                      <span className="text-right font-semibold text-zinc-950">
+                        {selectedServices.map((s) => s.service_name).join(", ")}
+                      </span>
+                    </div>
+                  ) : null}
+                  <div className="flex items-center justify-between gap-4">
+                    <span>Personel</span>
+                    <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
+                  </div>
+                  {formData.date ? (
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Tarih</span>
+                      <span className="font-semibold text-zinc-950">{formatDateLabel(formData.date)}</span>
+                    </div>
+                  ) : null}
+                  {bookingResult?.start_at && availability ? (
+                    <div className="flex items-center justify-between gap-4">
+                      <span>Saat</span>
+                      <span className="font-semibold text-zinc-950">
+                        {formatHour(bookingResult.start_at, availability.timezone)}
+                      </span>
+                    </div>
+                  ) : null}
+                  {selectedServices.length ? (
+                    <div className="flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-zinc-950">
+                      <span className="font-semibold">Toplam Tutar</span>
+                      <span className="font-semibold">
+                        {formatPrice(totalSelectedPrice, bookingCurrency)}
+                      </span>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={resetBooking}
+                className="mt-6 w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800"
+              >
+                Yeni Randevu Oluştur
+              </button>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-zinc-50">
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col md:flex-row">
@@ -994,12 +1096,6 @@ export default function BookingPage() {
               {submitState === "error" ? (
                 <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                   {submitError}
-                </div>
-              ) : null}
-
-              {successMessage ? (
-                <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-                  {successMessage}
                 </div>
               ) : null}
 
