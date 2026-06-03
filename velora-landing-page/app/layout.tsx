@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({
   subsets: ['latin']
@@ -109,7 +110,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <Analytics />
       <head>
         <Script
           id="schema-organization"
@@ -126,7 +126,9 @@ export default function RootLayout({
         className={`${plusJakartaSans.className} ${inter.className} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
+      <GoogleAnalytics gaId="G-QMM7KHB33F" />
     </html>
   );
 }
