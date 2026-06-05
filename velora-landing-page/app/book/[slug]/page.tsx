@@ -38,6 +38,7 @@ type Service = {
   category: string | null;
   color: string | null;
   is_active: boolean;
+  consent_form_url: string | null;
 };
 
 type AvailabilitySlot = {
@@ -170,6 +171,11 @@ export default function BookingPage() {
   const [dateState, setDateState] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [dateError, setDateError] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
+  const [consentCheckboxes, setConsentCheckboxes] = useState<Record<string, boolean>>({});
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpValue, setOtpValue] = useState("");
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [otpError, setOtpError] = useState<string | null>(null);
   const categoriesScrollRef = useRef<HTMLDivElement | null>(null);
   const categorySectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const categoryButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -466,13 +472,6 @@ export default function BookingPage() {
     });
   }, [activeCategory]);
 
-  const canGoNext =
-    step === 1
-      ? Boolean(formData.services.length)
-      : step === 2
-        ? Boolean(formData.staffId && formData.date && selectedSlot)
-        : Boolean(formData.name.trim() && formData.surname.trim() && formData.phone.trim());
-
   const updateForm = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setFormData((current) => ({ ...current, [key]: value }));
   };
@@ -484,6 +483,34 @@ export default function BookingPage() {
         ? formData.services.filter((item) => item !== serviceId)
         : [...formData.services, serviceId],
     );
+  };
+
+  const consentServices = selectedServices.filter((service) => service.consent_form_url);
+  const requiresConsent = consentServices.length > 0;
+  const allCheckboxesChecked =
+    consentServices.length > 0 && consentServices.every((service) => consentCheckboxes[service.id]);
+
+  const consentReady = !requiresConsent || (allCheckboxesChecked && otpSent && otpValue.length === 6);
+  const canGoNext =
+    step === 1
+      ? Boolean(formData.services.length)
+      : step === 2
+        ? Boolean(formData.staffId && formData.date && selectedSlot)
+        : Boolean(formData.name.trim() && formData.surname.trim() && formData.phone.trim()) && consentReady;
+
+  const sendConsentOtp = async () => {
+    setOtpLoading(true);
+    setOtpError(null);
+    try {
+      await fetch(`${BOOKING_API}/salons/${slug}/consent-otp/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: normalizePhone(formData.phone) || formData.phone }),
+      });
+      setOtpSent(true);
+    } finally {
+      setOtpLoading(false);
+    }
   };
 
   const scrollCategories = (direction: "left" | "right") => {
@@ -534,17 +561,21 @@ export default function BookingPage() {
           client_name: clientName,
           client_phone: normalizePhone(formData.phone),
           client_email: formData.email.trim() || null,
+          ...(requiresConsent ? { consent_otp_code: otpValue } : {}),
         }),
       });
 
       if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        throw new Error(
+        const errorMsg =
           errorBody?.detail?.message ||
-            errorBody?.error?.message ||
-            errorBody?.error ||
-            "Randevu oluşturulamadı.",
-        );
+          errorBody?.error?.message ||
+          errorBody?.error ||
+          "Randevu oluşturulamadı.";
+        if (response.status === 422 && requiresConsent) {
+          setOtpError("Kod geçersiz veya süresi dolmuş. Tekrar gönderin.");
+        }
+        throw new Error(errorMsg);
       }
 
       const payload: BookingResult = await response.json();
@@ -1047,6 +1078,84 @@ export default function BookingPage() {
                   className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                 />
               </div>
+
+              {requiresConsent && (
+                <div className="space-y-4 rounded-md border border-zinc-200 bg-zinc-50 p-4">
+                  <p className="text-sm font-semibold text-zinc-800">Onay Formu Doğrulaması</p>
+                  {consentServices.map((service) => (
+                    <label key={service.id} className="flex cursor-pointer items-start gap-3 text-sm text-zinc-700">
+                      <input
+                        type="checkbox"
+                        checked={consentCheckboxes[service.id] ?? false}
+                        onChange={(e) =>
+                          setConsentCheckboxes((prev) => ({ ...prev, [service.id]: e.target.checked }))
+                        }
+                        className="mt-0.5 h-4 w-4 rounded border-zinc-300 accent-zinc-900"
+                      />
+                      <span>
+                        <a
+                          href={service.consent_form_url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-indigo-600 underline"
+                        >
+                          {service.service_name} onam formunu
+                        </a>{" "}
+                        okudum ve kabul ediyorum.
+                      </span>
+                    </label>
+                  ))}
+                  {allCheckboxesChecked && (
+                    <div className="space-y-3">
+                      {!otpSent ? (
+                        <button
+                          type="button"
+                          onClick={sendConsentOtp}
+                          disabled={otpLoading || !formData.phone.trim()}
+                          className="w-full rounded-sm border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {otpLoading ? "Gönderiliyor..." : "WhatsApp ile doğrula"}
+                        </button>
+                      ) : (
+                        <div className="space-y-2">
+                          <p className="text-xs text-zinc-500">
+                            {formData.phone} numarasına WhatsApp ile doğrulama kodu gönderildi.
+                          </p>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={6}
+                            value={otpValue}
+                            onChange={(e) => {
+                              setOtpValue(e.target.value);
+                              setOtpError(null);
+                            }}
+                            placeholder="6 haneli kodu girin"
+                            className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={sendConsentOtp}
+                            disabled={otpLoading}
+                            className="text-xs text-zinc-400 underline hover:text-zinc-600 disabled:opacity-50"
+                          >
+                            Tekrar gönder
+                          </button>
+                        </div>
+                      )}
+                      {otpError && (
+                        <p className="text-xs text-rose-600">{otpError}</p>
+                      )}
+                    </div>
+                  )}
+                  {allCheckboxesChecked && otpSent && otpValue.length === 6 && !otpError && (
+                    <p className="flex items-center gap-1 text-sm font-medium text-emerald-600">
+                      <CheckCircle size={14} />
+                      Doğrulama kodu girildi
+                    </p>
+                  )}
+                </div>
+              )}
 
               <div className="rounded-md border border-zinc-200 bg-white p-5">
                 <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
