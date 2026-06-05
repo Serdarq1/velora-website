@@ -176,6 +176,9 @@ export default function BookingPage() {
   const [otpValue, setOtpValue] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState<string | null>(null);
+  const [showOtpOverlay, setShowOtpOverlay] = useState(false);
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const categoriesScrollRef = useRef<HTMLDivElement | null>(null);
   const categorySectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const categoryButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -490,13 +493,13 @@ export default function BookingPage() {
   const allCheckboxesChecked =
     consentServices.length > 0 && consentServices.every((service) => consentCheckboxes[service.id]);
 
-  const consentReady = !requiresConsent || (allCheckboxesChecked && otpSent && otpValue.length === 6);
   const canGoNext =
     step === 1
       ? Boolean(formData.services.length)
       : step === 2
         ? Boolean(formData.staffId && formData.date && selectedSlot)
-        : Boolean(formData.name.trim() && formData.surname.trim() && formData.phone.trim()) && consentReady;
+        : Boolean(formData.name.trim() && formData.surname.trim() && formData.phone.trim()) &&
+          (!requiresConsent || allCheckboxesChecked);
 
   const sendConsentOtp = async () => {
     setOtpLoading(true);
@@ -535,15 +538,8 @@ export default function BookingPage() {
     setStep((current) => Math.max(current - 1, 1));
   };
 
-  const nextStep = async () => {
-    if (step < 3) {
-      if (!canGoNext) return;
-      setStep((current) => Math.min(current + 1, 3));
-      return;
-    }
-
+  const submitBooking = async (otp?: string) => {
     if (!slug || !selectedServices.length || !selectedSlot || !formData.staffId) return;
-
     setSubmitState("submitting");
     setSubmitError("");
     setSuccessMessage("");
@@ -561,7 +557,7 @@ export default function BookingPage() {
           client_name: clientName,
           client_phone: normalizePhone(formData.phone),
           client_email: formData.email.trim() || null,
-          ...(requiresConsent ? { consent_otp_code: otpValue } : {}),
+          ...(requiresConsent && otp ? { consent_otp_code: otp } : {}),
         }),
       });
 
@@ -574,18 +570,41 @@ export default function BookingPage() {
           "Randevu oluşturulamadı.";
         if (response.status === 422 && requiresConsent) {
           setOtpError("Kod geçersiz veya süresi dolmuş. Tekrar gönderin.");
+          setSubmitState("idle");
+          return;
         }
         throw new Error(errorMsg);
       }
 
-      const payload: BookingResult = await response.json();
-      setBookingResult(payload);
-      setSuccessMessage("Randevu başarıyla oluşturuldu");
+      const data = await response.json().catch(() => null);
       setSubmitState("success");
-    } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : "Randevu oluşturulamadı.");
+      setBookingResult(data?.data ?? null);
+      if (data?.data?.booking_message) setSuccessMessage(data.data.booking_message);
+    } catch (err) {
       setSubmitState("error");
+      setSubmitError(err instanceof Error ? err.message : "Randevu oluşturulamadı.");
     }
+  };
+
+  const nextStep = async () => {
+    if (step < 3) {
+      if (!canGoNext) return;
+      setStep((current) => Math.min(current + 1, 3));
+      return;
+    }
+
+    if (!canGoNext) return;
+
+    // If consent is required and not yet OTP-verified, show overlay to get OTP first
+    if (requiresConsent && !otpSent) {
+      setOtpDigits(["", "", "", "", "", ""]);
+      setOtpError(null);
+      setShowOtpOverlay(true);
+      await sendConsentOtp();
+      return;
+    }
+
+    void submitBooking();
   };
 
   if (pageState === "loading" || !slug) {
@@ -1080,8 +1099,8 @@ export default function BookingPage() {
               </div>
 
               {requiresConsent && (
-                <div className="space-y-4 rounded-md border border-zinc-200 bg-zinc-50 p-4">
-                  <p className="text-sm font-semibold text-zinc-800">Onay Formu Doğrulaması</p>
+                <div className="space-y-3 rounded-md border border-zinc-200 bg-zinc-50 p-4">
+                  <p className="text-sm font-semibold text-zinc-800">Onay Formu</p>
                   {consentServices.map((service) => (
                     <label key={service.id} className="flex cursor-pointer items-start gap-3 text-sm text-zinc-700">
                       <input
@@ -1105,55 +1124,6 @@ export default function BookingPage() {
                       </span>
                     </label>
                   ))}
-                  {allCheckboxesChecked && (
-                    <div className="space-y-3">
-                      {!otpSent ? (
-                        <button
-                          type="button"
-                          onClick={sendConsentOtp}
-                          disabled={otpLoading || !formData.phone.trim()}
-                          className="w-full rounded-sm border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          {otpLoading ? "Gönderiliyor..." : "WhatsApp ile doğrula"}
-                        </button>
-                      ) : (
-                        <div className="space-y-2">
-                          <p className="text-xs text-zinc-500">
-                            {formData.phone} numarasına WhatsApp ile doğrulama kodu gönderildi.
-                          </p>
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            maxLength={6}
-                            value={otpValue}
-                            onChange={(e) => {
-                              setOtpValue(e.target.value);
-                              setOtpError(null);
-                            }}
-                            placeholder="6 haneli kodu girin"
-                            className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
-                          />
-                          <button
-                            type="button"
-                            onClick={sendConsentOtp}
-                            disabled={otpLoading}
-                            className="text-xs text-zinc-400 underline hover:text-zinc-600 disabled:opacity-50"
-                          >
-                            Tekrar gönder
-                          </button>
-                        </div>
-                      )}
-                      {otpError && (
-                        <p className="text-xs text-rose-600">{otpError}</p>
-                      )}
-                    </div>
-                  )}
-                  {allCheckboxesChecked && otpSent && otpValue.length === 6 && !otpError && (
-                    <p className="flex items-center gap-1 text-sm font-medium text-emerald-600">
-                      <CheckCircle size={14} />
-                      Doğrulama kodu girildi
-                    </p>
-                  )}
                 </div>
               )}
 
@@ -1212,6 +1182,100 @@ export default function BookingPage() {
           ) : null}
         </main>
       </div>
+
+      {/* ── OTP Verification Overlay ── */}
+      {showOtpOverlay && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
+            <div className="mb-6 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-700">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <h2 className="text-lg font-semibold text-zinc-900">WhatsApp Doğrulama</h2>
+              <p className="mt-1 text-sm text-zinc-500">
+                {formData.phone} numarasına gönderilen 6 haneli kodu girin.
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-2">
+              {otpDigits.map((digit, idx) => (
+                <div
+                  key={idx}
+                  data-status={
+                    digit
+                      ? "selected"
+                      : otpDigits.slice(0, idx).every((d) => d) && !otpDigits[idx]
+                        ? "cursor"
+                        : "default"
+                  }
+                  className="relative flex h-12 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-base font-semibold text-zinc-900 transition-all data-[status=cursor]:border-zinc-900 data-[status=cursor]:ring-2 data-[status=cursor]:ring-zinc-200 data-[status=selected]:border-zinc-900 data-[status=selected]:ring-2 data-[status=selected]:ring-zinc-200"
+                >
+                  <span>{digit}</span>
+                  {!digit && otpDigits.slice(0, idx).every((d) => d) && !otpDigits[idx] && (
+                    <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 animate-pulse bg-zinc-900" />
+                  )}
+                  <input
+                    ref={(el) => { otpRefs.current[idx] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    className="absolute inset-0 cursor-text opacity-0"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "").slice(-1);
+                      const next = [...otpDigits];
+                      next[idx] = val;
+                      setOtpDigits(next);
+                      setOtpError(null);
+                      if (val && idx < 5) otpRefs.current[idx + 1]?.focus();
+                      if (next.every((d) => d)) {
+                        const code = next.join("");
+                        setOtpValue(code);
+                        void submitBooking(code).then(() => setShowOtpOverlay(false));
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && !digit && idx > 0) {
+                        otpRefs.current[idx - 1]?.focus();
+                      }
+                    }}
+                    onFocus={(e) => e.target.select()}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {otpError && (
+              <p className="mt-4 text-center text-xs text-rose-600">{otpError}</p>
+            )}
+
+            <div className="mt-6 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  setOtpDigits(["", "", "", "", "", ""]);
+                  setOtpError(null);
+                  await sendConsentOtp();
+                  otpRefs.current[0]?.focus();
+                }}
+                disabled={otpLoading}
+                className="w-full text-sm text-zinc-400 underline disabled:opacity-50"
+              >
+                {otpLoading ? "Gönderiliyor..." : "Kodu tekrar gönder"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowOtpOverlay(false); setOtpSent(false); setOtpDigits(["", "", "", "", "", ""]); setOtpError(null); }}
+                className="w-full text-sm text-zinc-400 hover:text-zinc-600"
+              >
+                İptal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
