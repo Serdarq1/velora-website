@@ -650,89 +650,80 @@ export default function BookingPage() {
       setSubmitError("");
       setSuccessMessage("");
       setBookingResult(null);
+      setShowOtpStep(false);
+      setOtpSent(false);
+      setOtpValue("");
+      setOtpDigits(["", "", "", "", "", ""]);
+      setOtpError(null);
+      setOtpLoading(false);
       setFormData((current) => ({ ...current, staffId: "", date: "", hour: "" }));
     };
 
     return (
-      <div className="min-h-screen bg-zinc-50">
-        <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col md:flex-row">
-          <aside className="relative overflow-hidden bg-[#070b10] px-8 py-10 text-white md:w-2/5 md:px-12 md:py-12">
-            <div className="relative z-10">
-              <Image src="/Velora_white.png" width={96} height={28} alt="Velora" priority />
-              <h1 className="mt-12 max-w-md text-4xl font-semibold leading-tight tracking-[-0.05em] md:text-5xl">
-                {salon.name}
-              </h1>
-            </div>
-            <div className="absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#8f4f3a]/25 blur-3xl" />
-            <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-[#f1d6ca]/10 blur-3xl" />
-          </aside>
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6 py-12">
+        <main className="w-full max-w-md text-center">
+          <div className="flex justify-center">
+            <CheckCircle size={56} className="text-emerald-500" strokeWidth={1.5} />
+          </div>
+          <h2 className="mt-6 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">
+            Randevunuz oluşturuldu!
+          </h2>
+          <p className="mt-3 text-zinc-500">
+            Randevunuz başarıyla kaydedildi. Sizi bekliyoruz!
+          </p>
 
-          <main className="flex flex-1 items-center justify-center px-6 py-12 md:px-12">
-            <div className="w-full max-w-md text-center">
-              <div className="flex justify-center">
-                <CheckCircle size={56} className="text-emerald-500" strokeWidth={1.5} />
+          <div className="mt-8 rounded-md border border-zinc-200 bg-white p-5 text-left">
+            <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
+            <div className="mt-4 space-y-3 text-sm text-zinc-600">
+              <div className="flex items-center justify-between gap-4">
+                <span>Salon</span>
+                <span className="font-semibold text-zinc-950">{salon.name}</span>
               </div>
-              <h2 className="mt-6 text-3xl font-semibold tracking-[-0.04em] text-zinc-950">
-                Randevunuz oluşturuldu!
-              </h2>
-              <p className="mt-3 text-zinc-500">
-                Randevunuz başarıyla kaydedildi. Sizi bekliyoruz!
-              </p>
-
-              <div className="mt-8 rounded-md border border-zinc-200 bg-white p-5 text-left">
-                <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
-                <div className="mt-4 space-y-3 text-sm text-zinc-600">
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Salon</span>
-                    <span className="font-semibold text-zinc-950">{salon.name}</span>
-                  </div>
-                  {selectedServices.length ? (
-                    <div className="flex items-center justify-between gap-4">
-                      <span>Hizmet</span>
-                      <span className="text-right font-semibold text-zinc-950">
-                        {selectedServices.map((s) => s.service_name).join(", ")}
-                      </span>
-                    </div>
-                  ) : null}
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Personel</span>
-                    <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
-                  </div>
-                  {formData.date ? (
-                    <div className="flex items-center justify-between gap-4">
-                      <span>Tarih</span>
-                      <span className="font-semibold text-zinc-950">{formatDateLabel(formData.date)}</span>
-                    </div>
-                  ) : null}
-                  {bookingResult?.start_at && availability ? (
-                    <div className="flex items-center justify-between gap-4">
-                      <span>Saat</span>
-                      <span className="font-semibold text-zinc-950">
-                        {formatHour(bookingResult.start_at, availability.timezone)}
-                      </span>
-                    </div>
-                  ) : null}
-                  {selectedServices.length ? (
-                    <div className="flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-zinc-950">
-                      <span className="font-semibold">Toplam Tutar</span>
-                      <span className="font-semibold">
-                        {formatPrice(totalSelectedPrice, bookingCurrency)}
-                      </span>
-                    </div>
-                  ) : null}
+              {selectedServices.length ? (
+                <div className="flex items-center justify-between gap-4">
+                  <span>Hizmet</span>
+                  <span className="text-right font-semibold text-zinc-950">
+                    {selectedServices.map((s) => s.service_name).join(", ")}
+                  </span>
                 </div>
+              ) : null}
+              <div className="flex items-center justify-between gap-4">
+                <span>Personel</span>
+                <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
               </div>
-
-              <button
-                type="button"
-                onClick={resetBooking}
-                className="mt-6 w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800"
-              >
-                Yeni Randevu Oluştur
-              </button>
+              {formData.date ? (
+                <div className="flex items-center justify-between gap-4">
+                  <span>Tarih</span>
+                  <span className="font-semibold text-zinc-950">{formatDateLabel(formData.date)}</span>
+                </div>
+              ) : null}
+              {bookingResult?.start_at && availability ? (
+                <div className="flex items-center justify-between gap-4">
+                  <span>Saat</span>
+                  <span className="font-semibold text-zinc-950">
+                    {formatHour(bookingResult.start_at, availability.timezone)}
+                  </span>
+                </div>
+              ) : null}
+              {selectedServices.length ? (
+                <div className="flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-zinc-950">
+                  <span className="font-semibold">Toplam Tutar</span>
+                  <span className="font-semibold">
+                    {formatPrice(totalSelectedPrice, bookingCurrency)}
+                  </span>
+                </div>
+              ) : null}
             </div>
-          </main>
-        </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={resetBooking}
+            className="mt-6 w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800"
+          >
+            Yeni Randevu Oluştur
+          </button>
+        </main>
       </div>
     );
   }
@@ -1041,54 +1032,65 @@ export default function BookingPage() {
             <section className="space-y-6">
               {showOtpStep ? (
                 <>
-                  <div>
+                  <div className={submitState === "submitting" ? "pointer-events-none opacity-40" : undefined}>
                     <h2 className="text-3xl font-semibold tracking-[-0.04em] text-zinc-950">WhatsApp Doğrulama</h2>
                     <p className="mt-2 text-sm text-zinc-500">
                       {formData.phone} numarasına WhatsApp ile 6 haneli kod gönderdik.
                     </p>
                   </div>
 
-                  <div className="flex justify-center gap-2 py-4">
-                    {otpDigits.map((digit, idx) => (
-                      <div
-                        key={idx}
-                        data-status={digit ? "selected" : idx === focusedOtpIndex ? "cursor" : "default"}
-                        className="relative flex h-12 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-base font-semibold text-zinc-900 transition-all data-[status=cursor]:border-zinc-900 data-[status=cursor]:ring-2 data-[status=cursor]:ring-zinc-200 data-[status=selected]:border-zinc-900 data-[status=selected]:ring-2 data-[status=selected]:ring-zinc-200"
-                      >
-                        <span>{digit}</span>
-                        {!digit && idx === focusedOtpIndex && (
-                          <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 animate-pulse bg-zinc-900" />
-                        )}
-                        <input
-                          ref={(el) => { otpRefs.current[idx] = el; }}
-                          type="text"
-                          inputMode="numeric"
-                          maxLength={1}
-                          value={digit}
-                          className="absolute inset-0 cursor-text opacity-0"
-                          onChange={(e) => {
-                            const val = e.target.value.replace(/\D/g, "").slice(-1);
-                            const next = [...otpDigits];
-                            next[idx] = val;
-                            setOtpDigits(next);
-                            setOtpError(null);
-                            if (val && idx < 5) otpRefs.current[idx + 1]?.focus();
-                            if (next.every((d) => d)) {
-                              const code = next.join("");
-                              setOtpValue(code);
-                              void submitBooking(code);
-                            }
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === "Backspace" && !digit && idx > 0) {
-                              otpRefs.current[idx - 1]?.focus();
-                            }
-                          }}
-                          onFocus={() => setFocusedOtpIndex(idx)}
-                          onBlur={() => setFocusedOtpIndex(null)}
-                        />
+                  <div className="relative">
+                    {submitState === "submitting" ? (
+                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-2xl bg-white/85 py-6 backdrop-blur-sm">
+                        <LoaderCircle size={34} className="animate-spin text-zinc-900" strokeWidth={1.8} />
+                        <p className="mt-3 text-sm font-medium text-zinc-700">Randevunuz oluşturuluyor...</p>
                       </div>
-                    ))}
+                    ) : null}
+                    <div className="flex justify-center gap-2 py-4">
+                      {otpDigits.map((digit, idx) => (
+                        <div
+                          key={idx}
+                          data-status={digit ? "selected" : idx === focusedOtpIndex ? "cursor" : "default"}
+                          className="relative flex h-12 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-base font-semibold text-zinc-900 transition-all data-[status=cursor]:border-zinc-900 data-[status=cursor]:ring-2 data-[status=cursor]:ring-zinc-200 data-[status=selected]:border-zinc-900 data-[status=selected]:ring-2 data-[status=selected]:ring-zinc-200"
+                        >
+                          <span>{digit}</span>
+                          {!digit && idx === focusedOtpIndex && (
+                            <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 animate-pulse bg-zinc-900" />
+                          )}
+                          <input
+                            ref={(el) => { otpRefs.current[idx] = el; }}
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={1}
+                            value={digit}
+                            disabled={submitState === "submitting"}
+                            className="absolute inset-0 cursor-text opacity-0"
+                            onChange={(e) => {
+                              if (submitState === "submitting") return;
+                              const val = e.target.value.replace(/\D/g, "").slice(-1);
+                              const next = [...otpDigits];
+                              next[idx] = val;
+                              setOtpDigits(next);
+                              setOtpError(null);
+                              if (val && idx < 5) otpRefs.current[idx + 1]?.focus();
+                              if (next.every((d) => d)) {
+                                const code = next.join("");
+                                setOtpValue(code);
+                                void submitBooking(code);
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (submitState === "submitting") return;
+                              if (e.key === "Backspace" && !digit && idx > 0) {
+                                otpRefs.current[idx - 1]?.focus();
+                              }
+                            }}
+                            onFocus={() => setFocusedOtpIndex(idx)}
+                            onBlur={() => setFocusedOtpIndex(null)}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {otpError && (
@@ -1099,12 +1101,13 @@ export default function BookingPage() {
                     <button
                       type="button"
                       onClick={async () => {
+                        if (submitState === "submitting") return;
                         setOtpDigits(["", "", "", "", "", ""]);
                         setOtpError(null);
                         await sendConsentOtp();
                         otpRefs.current[0]?.focus();
                       }}
-                      disabled={otpLoading}
+                      disabled={otpLoading || submitState === "submitting"}
                       className="w-full text-sm text-zinc-400 underline disabled:opacity-50"
                     >
                       {otpLoading ? "Gönderiliyor..." : "Kodu tekrar gönder"}
@@ -1112,12 +1115,14 @@ export default function BookingPage() {
                     <button
                       type="button"
                       onClick={() => {
+                        if (submitState === "submitting") return;
                         setShowOtpStep(false);
                         setOtpSent(false);
                         setOtpDigits(["", "", "", "", "", ""]);
                         setOtpError(null);
                       }}
-                      className="w-full rounded-sm border border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+                      disabled={submitState === "submitting"}
+                      className="w-full rounded-sm border border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       İptal
                     </button>
