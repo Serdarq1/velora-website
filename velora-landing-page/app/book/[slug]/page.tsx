@@ -176,8 +176,9 @@ export default function BookingPage() {
   const [otpValue, setOtpValue] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState<string | null>(null);
-  const [showOtpOverlay, setShowOtpOverlay] = useState(false);
+  const [showOtpStep, setShowOtpStep] = useState(false);
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const [focusedOtpIndex, setFocusedOtpIndex] = useState<number | null>(null);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const categoriesScrollRef = useRef<HTMLDivElement | null>(null);
   const categorySectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -599,7 +600,7 @@ export default function BookingPage() {
     if (requiresConsent && !otpSent) {
       setOtpDigits(["", "", "", "", "", ""]);
       setOtpError(null);
-      setShowOtpOverlay(true);
+      setShowOtpStep(true);
       await sendConsentOtp();
       return;
     }
@@ -1038,244 +1039,236 @@ export default function BookingPage() {
 
           {step === 3 ? (
             <section className="space-y-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-zinc-950">Kişisel Bilgiler</h2>
-                  <p className="mt-2 text-sm text-zinc-500">Randevuyu oluşturmak için iletişim bilgilerinizi girin.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="grid h-11 w-11 place-items-center rounded-full text-zinc-900 transition hover:bg-zinc-100"
-                  aria-label="Önceki adım"
-                >
-                  <MoveLeft size={20} />
-                </button>
-              </div>
+              {showOtpStep ? (
+                <>
+                  <div>
+                    <h2 className="text-3xl font-semibold tracking-[-0.04em] text-zinc-950">WhatsApp Doğrulama</h2>
+                    <p className="mt-2 text-sm text-zinc-500">
+                      {formData.phone} numarasına WhatsApp ile 6 haneli kod gönderdik.
+                    </p>
+                  </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Ad</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(event) => updateForm("name", event.target.value)}
-                    placeholder="Ayşe"
-                    className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Soyad</label>
-                  <input
-                    type="text"
-                    value={formData.surname}
-                    onChange={(event) => updateForm("surname", event.target.value)}
-                    placeholder="Yılmaz"
-                    className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
-                  />
-                </div>
-              </div>
+                  <div className="flex justify-center gap-2 py-4">
+                    {otpDigits.map((digit, idx) => (
+                      <div
+                        key={idx}
+                        data-status={digit ? "selected" : idx === focusedOtpIndex ? "cursor" : "default"}
+                        className="relative flex h-12 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-base font-semibold text-zinc-900 transition-all data-[status=cursor]:border-zinc-900 data-[status=cursor]:ring-2 data-[status=cursor]:ring-zinc-200 data-[status=selected]:border-zinc-900 data-[status=selected]:ring-2 data-[status=selected]:ring-zinc-200"
+                      >
+                        <span>{digit}</span>
+                        {!digit && idx === focusedOtpIndex && (
+                          <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 animate-pulse bg-zinc-900" />
+                        )}
+                        <input
+                          ref={(el) => { otpRefs.current[idx] = el; }}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={1}
+                          value={digit}
+                          className="absolute inset-0 cursor-text opacity-0"
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "").slice(-1);
+                            const next = [...otpDigits];
+                            next[idx] = val;
+                            setOtpDigits(next);
+                            setOtpError(null);
+                            if (val && idx < 5) otpRefs.current[idx + 1]?.focus();
+                            if (next.every((d) => d)) {
+                              const code = next.join("");
+                              setOtpValue(code);
+                              void submitBooking(code);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Backspace" && !digit && idx > 0) {
+                              otpRefs.current[idx - 1]?.focus();
+                            }
+                          }}
+                          onFocus={() => setFocusedOtpIndex(idx)}
+                          onBlur={() => setFocusedOtpIndex(null)}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Telefon Numarası</label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(event) => updateForm("phone", event.target.value)}
-                  placeholder="+90 5xx xxx xx xx"
-                  className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
-                />
-              </div>
+                  {otpError && (
+                    <p className="text-center text-xs text-rose-600">{otpError}</p>
+                  )}
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">E-posta (İsteğe bağlı)</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(event) => updateForm("email", event.target.value)}
-                  placeholder="ornek@mail.com"
-                  className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
-                />
-              </div>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        setOtpDigits(["", "", "", "", "", ""]);
+                        setOtpError(null);
+                        await sendConsentOtp();
+                        otpRefs.current[0]?.focus();
+                      }}
+                      disabled={otpLoading}
+                      className="w-full text-sm text-zinc-400 underline disabled:opacity-50"
+                    >
+                      {otpLoading ? "Gönderiliyor..." : "Kodu tekrar gönder"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowOtpStep(false);
+                        setOtpSent(false);
+                        setOtpDigits(["", "", "", "", "", ""]);
+                        setOtpError(null);
+                      }}
+                      className="w-full rounded-sm border border-zinc-200 px-4 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+                    >
+                      İptal
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-3xl font-semibold tracking-[-0.04em] text-zinc-950">Kişisel Bilgiler</h2>
+                      <p className="mt-2 text-sm text-zinc-500">Randevuyu oluşturmak için iletişim bilgilerinizi girin.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={prevStep}
+                      className="grid h-11 w-11 place-items-center rounded-full text-zinc-900 transition hover:bg-zinc-100"
+                      aria-label="Önceki adım"
+                    >
+                      <MoveLeft size={20} />
+                    </button>
+                  </div>
 
-              {requiresConsent && (
-                <div className="space-y-3 rounded-md border border-zinc-200 bg-zinc-50 p-4">
-                  <p className="text-sm font-semibold text-zinc-800">Onay Formu</p>
-                  {consentServices.map((service) => (
-                    <label key={service.id} className="flex cursor-pointer items-start gap-3 text-sm text-zinc-700">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Ad</label>
                       <input
-                        type="checkbox"
-                        checked={consentCheckboxes[service.id] ?? false}
-                        onChange={(e) =>
-                          setConsentCheckboxes((prev) => ({ ...prev, [service.id]: e.target.checked }))
-                        }
-                        className="mt-0.5 h-4 w-4 rounded border-zinc-300 accent-zinc-900"
+                        type="text"
+                        value={formData.name}
+                        onChange={(event) => updateForm("name", event.target.value)}
+                        placeholder="Ayşe"
+                        className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
                       />
-                      <span>
-                        <a
-                          href={service.consent_form_url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-indigo-600 underline"
-                        >
-                          {service.service_name} onam formunu
-                        </a>{" "}
-                        okudum ve kabul ediyorum.
-                      </span>
-                    </label>
-                  ))}
-                </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Soyad</label>
+                      <input
+                        type="text"
+                        value={formData.surname}
+                        onChange={(event) => updateForm("surname", event.target.value)}
+                        placeholder="Yılmaz"
+                        className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">Telefon Numarası</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(event) => updateForm("phone", event.target.value)}
+                      placeholder="+90 5xx xxx xx xx"
+                      className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold tracking-[0.14em] text-zinc-500">E-posta (İsteğe bağlı)</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(event) => updateForm("email", event.target.value)}
+                      placeholder="ornek@mail.com"
+                      className="w-full rounded-sm border border-zinc-200 bg-white p-4 outline-none"
+                    />
+                  </div>
+
+                  {requiresConsent && (
+                    <div className="space-y-3">
+                      {consentServices.map((service) => (
+                        <label key={service.id} className="flex cursor-pointer items-start gap-3 text-sm text-zinc-700">
+                          <input
+                            type="checkbox"
+                            checked={consentCheckboxes[service.id] ?? false}
+                            onChange={(e) =>
+                              setConsentCheckboxes((prev) => ({ ...prev, [service.id]: e.target.checked }))
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-zinc-300 accent-zinc-900"
+                          />
+                          <span>
+                            <a
+                              href={service.consent_form_url!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-medium text-indigo-600 underline"
+                            >
+                              {service.service_name} onam formunu
+                            </a>{" "}
+                            okudum ve kabul ediyorum.
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="rounded-md border border-zinc-200 bg-white p-5">
+                    <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
+                    <div className="mt-4 space-y-3 text-sm text-zinc-600">
+                      <div className="flex items-center justify-between gap-4">
+                        <span>Salon</span>
+                        <span className="font-semibold text-zinc-950">{salon.name}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <span>Hizmet</span>
+                        <span className="text-right font-semibold text-zinc-950">
+                          {selectedServices.length ? selectedServices.map((service) => service.service_name).join(", ") : "-"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <span>Personel</span>
+                        <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <span>Tarih</span>
+                        <span className="font-semibold text-zinc-950">{formData.date ? formatDateLabel(formData.date) : "-"}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <span>Saat</span>
+                        <span className="font-semibold text-zinc-950">
+                          {selectedSlot && availability ? formatHour(selectedSlot.start_at, availability.timezone) : "-"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-zinc-950">
+                        <span className="font-semibold">Toplam Tutar</span>
+                        <span className="font-semibold">
+                          {selectedServices.length ? formatPrice(totalSelectedPrice, bookingCurrency) : "-"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    disabled={submitState === "submitting" || !canGoNext}
+                    className="w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-300"
+                  >
+                    {submitState === "submitting" ? "Onaylanıyor..." : "Randevuyu Onayla"}
+                  </button>
+
+                  {submitState === "error" ? (
+                    <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                      {submitError}
+                    </div>
+                  ) : null}
+                </>
               )}
-
-              <div className="rounded-md border border-zinc-200 bg-white p-5">
-                <p className="text-sm font-semibold tracking-[0.14em] text-zinc-500">Randevu Özeti</p>
-                <div className="mt-4 space-y-3 text-sm text-zinc-600">
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Salon</span>
-                    <span className="font-semibold text-zinc-950">{salon.name}</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Hizmet</span>
-                    <span className="text-right font-semibold text-zinc-950">
-                      {selectedServices.length ? selectedServices.map((service) => service.service_name).join(", ") : "-"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Personel</span>
-                    <span className="font-semibold text-zinc-950">{selectedStaffName}</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Tarih</span>
-                    <span className="font-semibold text-zinc-950">{formData.date ? formatDateLabel(formData.date) : "-"}</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-4">
-                    <span>Saat</span>
-                    <span className="font-semibold text-zinc-950">
-                      {selectedSlot && availability ? formatHour(selectedSlot.start_at, availability.timezone) : "-"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-zinc-950">
-                    <span className="font-semibold">Toplam Tutar</span>
-                    <span className="font-semibold">
-                      {selectedServices.length ? formatPrice(totalSelectedPrice, bookingCurrency) : "-"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={nextStep}
-                disabled={submitState === "submitting" || !canGoNext}
-                className="w-full rounded-sm bg-zinc-950 px-4 py-4 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-300"
-              >
-                {submitState === "submitting" ? "Onaylanıyor..." : "Randevuyu Onayla"}
-              </button>
-
-              {submitState === "error" ? (
-                <div className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                  {submitError}
-                </div>
-              ) : null}
-
             </section>
           ) : null}
         </main>
       </div>
-
-      {/* ── OTP Verification Overlay ── */}
-      {showOtpOverlay && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
-            <div className="mb-6 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-700">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-              </div>
-              <h2 className="text-lg font-semibold text-zinc-900">WhatsApp Doğrulama</h2>
-              <p className="mt-1 text-sm text-zinc-500">
-                {formData.phone} numarasına gönderilen 6 haneli kodu girin.
-              </p>
-            </div>
-
-            <div className="flex justify-center gap-2">
-              {otpDigits.map((digit, idx) => (
-                <div
-                  key={idx}
-                  data-status={
-                    digit
-                      ? "selected"
-                      : otpDigits.slice(0, idx).every((d) => d) && !otpDigits[idx]
-                        ? "cursor"
-                        : "default"
-                  }
-                  className="relative flex h-12 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-base font-semibold text-zinc-900 transition-all data-[status=cursor]:border-zinc-900 data-[status=cursor]:ring-2 data-[status=cursor]:ring-zinc-200 data-[status=selected]:border-zinc-900 data-[status=selected]:ring-2 data-[status=selected]:ring-zinc-200"
-                >
-                  <span>{digit}</span>
-                  {!digit && otpDigits.slice(0, idx).every((d) => d) && !otpDigits[idx] && (
-                    <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 animate-pulse bg-zinc-900" />
-                  )}
-                  <input
-                    ref={(el) => { otpRefs.current[idx] = el; }}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    className="absolute inset-0 cursor-text opacity-0"
-                    onChange={(e) => {
-                      const val = e.target.value.replace(/\D/g, "").slice(-1);
-                      const next = [...otpDigits];
-                      next[idx] = val;
-                      setOtpDigits(next);
-                      setOtpError(null);
-                      if (val && idx < 5) otpRefs.current[idx + 1]?.focus();
-                      if (next.every((d) => d)) {
-                        const code = next.join("");
-                        setOtpValue(code);
-                        void submitBooking(code).then(() => setShowOtpOverlay(false));
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && !digit && idx > 0) {
-                        otpRefs.current[idx - 1]?.focus();
-                      }
-                    }}
-                    onFocus={(e) => e.target.select()}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {otpError && (
-              <p className="mt-4 text-center text-xs text-rose-600">{otpError}</p>
-            )}
-
-            <div className="mt-6 flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={async () => {
-                  setOtpDigits(["", "", "", "", "", ""]);
-                  setOtpError(null);
-                  await sendConsentOtp();
-                  otpRefs.current[0]?.focus();
-                }}
-                disabled={otpLoading}
-                className="w-full text-sm text-zinc-400 underline disabled:opacity-50"
-              >
-                {otpLoading ? "Gönderiliyor..." : "Kodu tekrar gönder"}
-              </button>
-              <button
-                type="button"
-                onClick={() => { setShowOtpOverlay(false); setOtpSent(false); setOtpDigits(["", "", "", "", "", ""]); setOtpError(null); }}
-                className="w-full text-sm text-zinc-400 hover:text-zinc-600"
-              >
-                İptal
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
